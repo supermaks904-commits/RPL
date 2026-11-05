@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вирт РПЛ — Онлайн-симулятор футбола</title>
+<meta name="description" content="Вирт РПЛ — интерактивный симулятор чемпионата России по футболу с трансляциями матчей, составами, тактикой и логотипами команд." />
+<meta property="og:title" content="Вирт РПЛ — Онлайн-симулятор футбола" />
+<meta property="og:description" content="Вирт РПЛ — интерактивный симулятор чемпионата России по футболу с трансляциями матчей, составами, тактикой и логотипами команд." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8eee9;--panel:#fbfdfb;--ink:#10261c;--green:#1b5c3f;--green2:#2f7d55;--deep:#0d2f21;--yellow:#f0c419;--red:#d3342b;--muted:#5b7064;--line:#cdd9d0;--soft:#eff4f0;--chalk:#e9f2ea}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Onest,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+header.top{position:sticky;top:0;z-index:20;background:var(--deep);color:#fff;border-bottom:4px solid var(--yellow)}
+.bar{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{font:700 18px Unbounded,sans-serif;color:#fff;letter-spacing:.01em;display:inline-flex;align-items:center;gap:8px}
+.brand:hover{text-decoration:none}
+.brand-icon{width:22px;height:22px}
+nav{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+nav a{color:#cfe3d6;padding:6px 12px;border-radius:6px;font-weight:500;transition:all .15s}
+nav a:hover{background:#ffffff1a;text-decoration:none}
+nav a.on{background:var(--chalk);color:var(--deep);font-weight:600}
+.who{font-size:13px;color:#cfe3d6;display:flex;gap:10px;align-items:center}
+.who button{background:#ffffff1f;border:0;color:#fff;padding:5px 10px;border-radius:6px;cursor:pointer}
+.who button:hover{background:#ffffff33}
+main{max-width:1120px;margin:0 auto;padding:18px 16px 60px}
+h1{font:700 24px Unbounded,sans-serif;margin:6px 0 16px;letter-spacing:-.01em}
+h2{font:600 17px Onest;margin:22px 0 10px}
+h3{font:600 15px Onest;margin:0 0 8px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+.muted{color:var(--muted)}.small{font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sp{justify-content:space-between}
+.btn{background:var(--green);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s}
+.btn:hover{background:var(--green2)}.btn:disabled{opacity:.5;cursor:default}
+.btn.alt{background:var(--soft);color:var(--ink);border:1px solid var(--line)}.btn.alt:hover{background:var(--chalk)}
+.btn.red{background:var(--red)}.btn.sm{padding:5px 10px;font-size:13px}
+input,select,textarea{background:#fff;border:1px solid #b9c8be;border-radius:6px;padding:8px 10px;width:100%}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px;border-bottom:2px solid var(--line)}
+.tabs button{display:inline-flex;align-items:center;background:none;border:0;padding:8px 13px;cursor:pointer;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tabs button:hover{color:var(--ink);background:rgba(27,92,63,0.04);border-radius:6px 6px 0 0}
+.tabs button.on{color:var(--deep);border-bottom-color:var(--green);font-weight:700}
+.tab-comp-icon{width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:6px;flex-shrink:0;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.12))}
+.comp-banner{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:8px 0 16px;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
+.comp-banner-logo{width:52px;height:52px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.14))}
+.comp-banner-title{font:800 20px Unbounded,sans-serif;color:var(--deep);margin:0;line-height:1.2}
+.comp-banner-sub{font-size:13px;color:var(--muted);margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--muted);font-size:12.5px}
+th.s{cursor:pointer}th.s:hover{color:var(--ink)}
+td:first-child,th:first-child,td.l,th.l{text-align:left}
+tr:hover td{background:var(--soft)}
+.wrap{overflow-x:auto}
+.pos{width:24px;display:inline-block;color:var(--muted);font-weight:600;font-size:13px}
+.zone-gold td:first-child{box-shadow:inset 4px 0 #ffd700}
+.zone-top td:first-child{box-shadow:inset 4px 0 var(--green2)}
+.zone-playoff td:first-child{box-shadow:inset 4px 0 #ff9900}
+.zone-bad td:first-child{box-shadow:inset 4px 0 var(--red)}
+.zone-badge{font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:auto;letter-spacing:0.3px;white-space:nowrap}
+.zone-badge.gold{background:#fff8db;color:#8a6d00;border:1px solid #ffd700}
+.zone-badge.top{background:#e3f4e8;color:#0d5929;border:1px solid var(--green2)}
+.zone-badge.playoff{background:#fff3e0;color:#b25900;border:1px solid #ff9900}
+.zone-badge.bad{background:#ffebee;color:#b71c1c;border:1px solid var(--red)}
+.table-legend{display:flex;flex-wrap:wrap;gap:12px;padding:12px 14px;background:var(--soft);border-radius:8px;margin-top:12px;font-size:12.5px;color:var(--muted);border:1px solid var(--line);align-items:center}
+.table-legend-item{display:inline-flex;align-items:center;gap:6px}
+.table-legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block;flex-shrink:0}
+.table-legend-dot.gold{background:#ffd700}
+.table-legend-dot.top{background:var(--green2)}
+.table-legend-dot.playoff{background:#ff9900}
+.table-legend-dot.bad{background:var(--red)}
+.reg-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.reg-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--soft);color:var(--muted);margin-bottom:8px}
+.reg-step{display:flex;gap:12px;align-items:flex-start;margin-top:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.reg-step:last-child{border:0}
+.reg-icon{font-size:18px;line-height:1;flex-shrink:0;margin-top:2px}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--soft);border:1px solid var(--line);color:var(--muted)}
+.tag.live{background:var(--red);border-color:var(--red);color:#fff}
+.tag.derby{background:var(--yellow);border-color:var(--yellow);color:#3b3000}
+.tag.bg{background:transparent}
+
+/* Логотипы команд */
+.t-logo{width:22px;height:22px;object-fit:contain;vertical-align:middle;flex-shrink:0;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.12))}
+.t-logo.md{width:26px;height:26px}
+.t-logo.lg{width:54px;height:54px;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.25))}
+.t-logo.xl{width:76px;height:76px;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.28))}
+.t-cell{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.club-hero{display:flex;align-items:center;gap:20px;padding:20px;background:linear-gradient(135deg,var(--panel) 0%,#f0f7f2 100%)}
+@media(max-width:640px){.club-hero{flex-direction:column;align-items:flex-start}}
+
+.fx{display:grid;grid-template-columns:105px 1fr 76px 1fr 96px;gap:8px;align-items:center;padding:10px 8px;border-bottom:1px solid var(--line);border-radius:6px;transition:background .15s}
+.fx:last-child{border:0}.fx .d{font-size:13px;color:var(--muted)}
+.fx .t{display:flex;align-items:center;gap:8px;font-weight:600;min-width:0}
+.fx .t.r{justify-content:flex-end;text-align:right}
+.fx .t .t-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx .sc{text-align:center;font:700 16px Unbounded,sans-serif;background:var(--soft);padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
+a.fxl{color:inherit}a.fxl:hover{background:var(--soft);text-decoration:none}
+@media(max-width:700px){
+  .bar{padding:8px 12px;gap:8px}
+  .brand{font-size:16px}
+  nav a{padding:4px 8px;font-size:13px}
+  .fx{grid-template-columns:1fr 58px 1fr;gap:4px;padding:8px 4px}
+  .fx .d{grid-column:1/-1;font-size:11.5px;margin-bottom:2px}
+  .fx .t{font-size:13px;gap:5px}
+  .fx .t-logo.md{width:20px;height:20px}
+  .fx .sc{font-size:14px;padding:3px 4px}
+  .fx .x{grid-column:1/-1;justify-content:flex-start}
+}
+
+.score{background:var(--deep);color:#fff;border-radius:12px;padding:22px 18px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(13,47,33,0.3)}
+.score:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#ffffff06 0 60px,transparent 60px 120px)}
+.score>*{position:relative}
+.score .meta{font-size:13px;color:#b8d2c1;text-align:center}
+.score .line{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:12px 0}
+.score .tm-box{display:flex;align-items:center;gap:12px}
+.score .tm-box.r{justify-content:flex-end;text-align:right}
+.score .tm{font:700 20px Unbounded,sans-serif}
+.score .num{font:700 44px Unbounded,sans-serif;letter-spacing:.04em;background:#0000004d;padding:4px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)}
+@media(max-width:700px){
+  .score .tm{font-size:14px}
+  .score .num{font-size:28px;padding:3px 10px}
+  .score .t-logo.lg{width:36px;height:36px}
+  .score .tm-box{gap:8px}
+}
+.live-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-right:6px;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.25}}@media(prefers-reduced-motion:reduce){.live-dot{animation:none}}
+.ev{display:grid;grid-template-columns:54px 28px 1fr;gap:8px;padding:9px 6px;border-bottom:1px solid var(--line);align-items:center}
+.ev .m{font:600 13px Onest;color:var(--muted)}
+.ev.key{background:#fff8d8;border-left:4px solid var(--yellow);padding-left:8px}
+.ev.goal{background:#e3f4e8;border-left:4px solid var(--green2);padding-left:8px;font-weight:600}
+.ev.red{background:#fde8e6;border-left:4px solid var(--red);padding-left:8px}
+.ev .pl{font-size:12.5px;color:var(--muted)}
+.bar2{display:grid;grid-template-columns:54px 1fr 54px;gap:10px;align-items:center;margin:9px 0}
+.bar2 .v{font-weight:700}.bar2 .v:last-child{text-align:right}
+.bar2 .c{text-align:center;font-size:13px;color:var(--muted)}
+.bar2 .bb{display:flex;height:7px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:3px}
+.bar2 .bb i{display:block;background:var(--green2)}.bar2 .bb i+i{background:var(--yellow)}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--deep);color:#fff;padding:11px 18px;border-radius:8px;z-index:60;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.toast.err{background:var(--red)}
+.modal{position:fixed;inset:0;background:#0d2f2199;z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
+.modal>div{background:var(--panel);border-radius:10px;padding:22px;max-width:640px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-size:13px}
+.pick{display:grid;grid-template-columns:34px 1fr 118px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.pick select{padding:4px 6px}
+.pick.off{opacity:.5}
+.sug{position:relative}.sug .list{position:absolute;left:0;right:0;top:100%;background:#fff;border:1px solid #b9c8be;border-radius:6px;z-index:5;max-height:260px;overflow:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.sug .list div{padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--line)}.sug .list div:hover{background:var(--soft)}
+.warn{background:#fff6d6;border:1px solid #e7d27a;border-radius:6px;padding:8px 12px;font-size:14px}
+.code{font:600 14px ui-monospace,Consolas,monospace;background:var(--soft);padding:3px 7px;border-radius:4px}
+.qa{background:var(--soft);border-radius:6px;padding:12px;white-space:pre-wrap;margin-top:10px}
+.logo-preview-box{display:flex;align-items:center;gap:14px;background:var(--soft);padding:10px 14px;border-radius:8px;margin:10px 0}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+  <a class="brand" href="#/">
+    <img src="/assets/aistudio/russia_russian-premier-league.football-logos.cc_ba27e9c3.svg" alt="РПЛ" class="brand-icon" style="width:24px;height:24px;object-fit:contain"/>
+    Вирт РПЛ
+  </a>
+  <nav id="nav"></nav>
+  <div class="who" id="who"></div>
+</div></header>
+<main id="app"><div class="empty">Загрузка симулятора…</div></main>
+
+<script>
+'use strict';
+const S = { tok: localStorage.getItem('tok') || '', me: null, st: null, es: null };
+const $ = (s, r = document) => r.querySelector(s);
+const e = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// Утилита для надежного отображения официального логотипа команды
+const OFFICIAL_CLIENT_LOGOS = {
+  'зенит': '/assets/aistudio/russia_zenit.football-logos.cc_c93ec0ee.svg',
+  'спартак': '/assets/aistudio/russia_spartak-moskva.football-logos.cc_cd7a4eb7.svg',
+  'цска': '/assets/aistudio/PFC_CSKA_9a6b044d.svg',
+  'локомотив': '/assets/aistudio/russia_lokomotiv-moskva.football-logos.cc_af3d5476.svg',
+  'динамо москва': '/assets/aistudio/russia_dynamo-moscow.football-logos.cc_00d01b39.svg',
+  'краснодар': '/assets/aistudio/russia_krasnodar.football-logos.cc_3eb2641e.svg',
+  'ростов': '/assets/aistudio/russia_rostov.football-logos.cc_615b1535.svg',
+  'рубин': '/assets/aistudio/russia_rubin.football-logos.cc_f471fd8f.svg',
+  'крылья советов': '/assets/aistudio/russia_krylya-sovetov.football-logos.cc_1b424814.svg',
+  'ахмат': '/assets/aistudio/russia_akhmat.football-logos.cc_ec510264.svg',
+  'балтика': '/assets/aistudio/russia_baltika.football-logos.cc_dec89199.svg',
+  'сочи': '/assets/aistudio/russia_sochi.football-logos.cc_368db1f4.svg',
+  'пари нн': '/assets/aistudio/russia_pari-nn.football-logos.cc_3e0b1012.svg',
+  'оренбург': '/assets/aistudio/russia_orenburg.football-logos.cc_e7d8ed34.svg',
+  'акрон': '/assets/aistudio/russia_akron.football-logos.cc_9b564896.svg',
+  'динамо махачкала': '/assets/aistudio/russia_dynamo-makhachkala.football-logos.cc_9e55fd99.svg',
+  'факел': '/assets/aistudio/russia_fakel.football-logos.cc_4beaea45.svg',
+  'урал': '/assets/aistudio/russia_ural.football-logos.cc_d02d7659.svg',
+  'торпедо': '/assets/aistudio/russia_torpedo-moskva.football-logos.cc_458824bb.svg',
+  'шинник': '/assets/aistudio/russia_shinnik.football-logos.cc_b0a4c239.svg',
+  'арсенал': '/assets/aistudio/russia_arsenal-tula.football-logos.cc_1ce7619a.svg',
+  'ротор': '/assets/aistudio/russia_rotor.football-logos.cc_be212968.svg',
+  'родина': '/assets/aistudio/russia_rodina-moscow.football-logos.cc_9872b082.svg',
+  'камаз': '/assets/aistudio/russia_kamaz.football-logos.cc_5f0e30b1.svg',
+  'черноморец': '/assets/aistudio/russia_chernomorets-novorossiisk.football-logos.cc_69abc7dc.svg',
+  'ска-хабаровск': '/assets/aistudio/russia_ska-khabarovsk.football-logos.cc_5d23a258.svg',
+  'енисей': '/assets/aistudio/russia_yenisey.football-logos.cc_277f7baf.svg',
+  'уфа': '/assets/aistudio/russia_ufa.football-logos.cc_b2df7253.svg',
+  'нефтехимик': '/assets/aistudio/russia_neftekhimik-nizhnekamsk.football-logos.cc_7baec74c.svg',
+  'чайка': '/assets/aistudio/russia_chayka-peschanokopskoye.football-logos.cc_a336e808.svg',
+  'сокол': '/assets/aistudio/russia_fc-sokol-saratov.football-logos.cc_340b39fc.svg',
+  'амкар': '/assets/aistudio/russia_amkar.football-logos.cc_64e4152c.svg',
+  'ленинградец': '/assets/aistudio/russia_leningradets.football-logos.cc_3c0bef00.svg',
+  'велес': '/assets/aistudio/russia_veles-moscow.football-logos.cc_ed792674.svg',
+  'волга': '/assets/aistudio/russia_volga-ulyanovsk.football-logos.cc_b8522fda.svg',
+  'текстильщик': '/assets/aistudio/russia_tekstilshchik-ivanovo.football-logos.cc_f9a5bacd.svg',
+  'химик': '/assets/aistudio/russia_khimik-dzerzhinsk.football-logos.cc_36b7d5c1.svg',
+  'челябинск': '/assets/aistudio/russia_chelyabinsk.football-logos.cc_74fddc7d.svg',
+  'алания': '/assets/aistudio/alania-big_ca72efaa.png',
+  'амкал': '/assets/aistudio/amkal-big_9fc643af.png',
+  '2drots': '/assets/aistudio/2drots-big-768x768_24a6f01f.png',
+  'тюмень': '/assets/aistudio/tyumen-big-2023_361d20f9.png',
+  'динамо владивосток': '/assets/aistudio/dynamo-vladivostok-logo-145x100_35048b53.png',
+  'динамо ставрополь': '/assets/aistudio/dynamo-stavropol-logo-145x100_e57697c6.png',
+  'динамо вологда': '/assets/aistudio/dynamo-vologda-logo-145x100_d7f12918.png',
+  'динамо спб': '/assets/aistudio/dynamo-saint-petersburg-logo-145x100_9b445321.png',
+  'динамо-спб': '/assets/aistudio/dynamo-saint-petersburg-logo-145x100_9b445321.png',
+  'дружба': '/assets/aistudio/druzhba-maykop-big-768x635_e7d80d49.png',
+  'дружба майкоп': '/assets/aistudio/druzhba-maykop-big-768x635_e7d80d49.png',
+  'машук-кмв': '/assets/aistudio/mashuk-kmv-big-2023_b9aad6d1.png',
+  'нарт': '/assets/aistudio/nart-big-768x768_da8dae81.png',
+  'севастополь': '/assets/aistudio/sevastopol-big-768x768_a839f7ec.png',
+  'спартак нальчик': '/assets/aistudio/spartak-nalchik-big_b44c2e71.png',
+  'спартак владикавказ': '/assets/aistudio/fk-spartak-alaniya-vladikavkaz-2003-logo-png_seeklogo-538369_59af4f86.png',
+  'спартак-алания': '/assets/aistudio/fk-spartak-alaniya-vladikavkaz-2003-logo-png_seeklogo-538369_59af4f86.png',
+  'спартак-алания владикавказ': '/assets/aistudio/fk-spartak-alaniya-vladikavkaz-2003-logo-png_seeklogo-538369_59af4f86.png',
+  'звезда': '/logos/zvezda-spb.svg',
+  'звезда спб': '/logos/zvezda-spb.svg',
+  'салют белгород': '/assets/aistudio/salyut-belgorod-logo-145x100_eda88427.png',
+  'сатурн': '/assets/aistudio/saturn-logo-145x100_52d01930.png',
+  'леон сатурн': '/assets/aistudio/saturn-logo-145x100_52d01930.png',
+  'ска ростов': '/assets/aistudio/ska-rostov-on-don-big-2024_5888a199.png',
+  'иркутск': '/assets/aistudio/irkutsk-big_32a733f0.png',
+  'кубань холдинг': '/assets/aistudio/kuban-holding-logo-145x100_a8d8b782.png',
+  'кубань-холдинг': '/assets/aistudio/kuban-holding-logo-145x100_a8d8b782.png',
+  'спартак тамбов': '/assets/aistudio/spartak-tambov-logo-2023-145x100_cbb80c10.png',
+  'космос': '/assets/aistudio/kosmos-logo-145x100_de30adcf.png',
+  'космос долгопрудный': '/assets/aistudio/kosmos-logo-145x100_de30adcf.png',
+  'калуга': '/assets/aistudio/kaluga-logo-145x100_9361352d.png',
+  'зенит пенза': '/assets/aistudio/zenit-penza-logo-145x100_7015bb97.png',
+  'зенит ижевск': '/assets/aistudio/zenit-izhevsk-logo-145x100_912c7ca9.png',
+  'зенит-ижевск': '/assets/aistudio/zenit-izhevsk-logo-145x100_912c7ca9.png',
+  'ижевск': '/assets/aistudio/zenit-izhevsk-logo-145x100_912c7ca9.png',
+  'знамя труда': '/assets/aistudio/znamya-truda-logo-2023-145x100_18414f3c.png',
+  'динамо барнаул': '/assets/aistudio/dynamo-barnaul-logo-2022-145x100_5ea90613.png',
+  'победа': '/assets/aistudio/pobeda-logo-145x100_c17677cd.png',
+  'победа хасавюрт': '/assets/aistudio/pobeda-logo-145x100_c17677cd.png',
+  'луки-энергия': '/assets/aistudio/luki-energiya-logo-145x100_8ab65adb.png',
+  'авангард': '/assets/aistudio/avangard-kursk-logo-145x100_5e78c799.png',
+  'авангард курск': '/assets/aistudio/avangard-kursk-logo-145x100_5e78c799.png',
+  'армавир': '/assets/aistudio/armavir-logo-145x100_c9472b14.png',
+  'ангушт': '/assets/aistudio/angusht-logo-145x100_65e74e2b.png',
+  'сибирь': '/assets/aistudio/sibir-logo-145x100_32fa3466.png',
+  'динамо киров': '/assets/aistudio/dynamo-kirov-logo-145x100_635140b3.png',
+  'броуки': '/assets/aistudio/Brokeboys_lightmode_4834bb47.png',
+  'броуки (brokeboys)': '/assets/aistudio/Brokeboys_lightmode_4834bb47.png',
+  'синдекат': '/assets/aistudio/i_d0be2178.webp',
+  'банка': '/assets/aistudio/Team_BANKA_lightmode_658cabb4.png',
+  'fight nights': '/assets/aistudio/20250710185733_Fight_Nights_lightmode_ed417a13.png',
+  'prime squad': '/assets/aistudio/original__2__f34350ab.png',
+  'фк 10': '/assets/aistudio/30549813_47b25a7b.jpg',
+  'народная команда': '/assets/aistudio/1713435283593698984_492496b6.png',
+  'матч тв': '/assets/aistudio/original__1__0c5942f0.png',
+  'lit energy': '/assets/aistudio/original_e9317d9e.png',
+  'рубин ялта': '/assets/aistudio/rubin-yalta-logo-145x100_3fed7b5f.png',
+  'тосно': '/assets/aistudio/tosno-logo-145x100_0a915235.png',
+  'торпедо-2': '/assets/aistudio/torpedo-2-logo-2023-145x100_d926e9d3.png',
+  'волгарь': '/assets/aistudio/volgar-logo-145x100_5d3f5dfd.png',
+  'торпедо миасс': '/assets/aistudio/torpedo-miass-logo-145x100_2882b291.png',
+  'муром': '/assets/aistudio/murom-logo-145x100_6cc929e1.png',
+  'астрахань': '/assets/aistudio/astrakhan-logo-2024-145x100_cbd49f65.png',
+  'балтика-бфу': '/assets/aistudio/baltika-bfu-logo-145x100_7ed174fe.png',
+  'волна': '/assets/aistudio/volna-logo-145x100_517e32ba.png',
+  'эгриси': '/assets/aistudio/f14322dd6495d94f39ec68f33cf52_b5ba6e96.webp',
+  'чисто питер': '/assets/aistudio/original__3__dab66e2c.png',
+  'rocket team': '/assets/aistudio/1713523892825857620_cf3b7ed4.png'
+};
+
+function teamLogo(idOrName) {
+  if (!idOrName) return '';
+  const teams = S.st?.teams || [];
+  const t = teams.find(x => x.id === idOrName || x.name === idOrName);
+  if (t?.logo) return t.logo;
+  const key = String(idOrName).trim().toLowerCase();
+  for (const [k, v] of Object.entries(OFFICIAL_CLIENT_LOGOS)) {
+    if (key === k || key.includes(k) || k.includes(key)) return v;
+  }
+  return '';
+}
+
+const COMPETITION_CLIENT_LOGOS = {
+  rpl: '/logos/leagues/rpl.svg',
+  fnl: '/logos/leagues/fnl.svg',
+  cup: '/logos/leagues/cup.svg',
+  '2la': '/logos/leagues/2la.svg',
+  '2la_gold': '/logos/leagues/2la.svg',
+  '2la_silver': '/logos/leagues/2la.svg',
+  '2lb': '/logos/leagues/2lb.svg',
+  '2lb_1': '/logos/leagues/2lb.svg',
+  '2lb_2': '/logos/leagues/2lb.svg',
+  '2lb_3': '/logos/leagues/2lb.svg',
+  '2lb_4': '/logos/leagues/2lb.svg',
+  media: '/logos/leagues/media.svg'
+};
+
+function compLogo(id) {
+  if (!id) return '';
+  const c = (S.st?.comps || []).find(x => x.id === id);
+  if (c?.logo) return c.logo;
+  const key = String(id).toLowerCase().trim();
+  if (COMPETITION_CLIENT_LOGOS[key]) return COMPETITION_CLIENT_LOGOS[key];
+  if (key.startsWith('2la')) return COMPETITION_CLIENT_LOGOS['2la'];
+  if (key.startsWith('2lb')) return COMPETITION_CLIENT_LOGOS['2lb'];
+  return COMPETITION_CLIENT_LOGOS.rpl;
+}
+
+async function api(p, body) {
+  const r = await fetch('/api' + p, {
+    method: body !== undefined ? 'POST' : 'GET',
+    headers: { 'content-type': 'application/json', 'x-token': S.tok },
+    body: body !== undefined ? JSON.stringify(body) : undefined
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Ошибка ' + r.status);
+  return j;
+}
+
+function toast(m, err) {
+  const d = document.createElement('div');
+  d.className = 'toast' + (err ? ' err' : '');
+  d.textContent = m;
+  document.body.append(d);
+  setTimeout(() => d.remove(), err ? 5000 : 2600);
+}
+
+async function act(fn, ok) {
+  try {
+    const r = await fn();
+    if (ok) toast(typeof ok === 'function' ? ok(r) : ok);
+    return r;
+  } catch (x) {
+    toast(x.message, true);
+  }
+}
+
+function modal(html, mount) {
+  const m = document.createElement('div');
+  m.className = 'modal';
+  m.innerHTML = '<div>' + html + '</div>';
+  m.addEventListener('mousedown', ev => { if (ev.target === m) m.remove(); });
+  document.body.append(m);
+  mount && mount(m);
+  return m;
+}
+
+const fmtD = d => {
+  try {
+    return new Date(d + 'T12:00:00').toLocaleDateString('ru-RU', { weekday: 'short', day: 'numeric', month: 'short' });
+  } catch {
+    return d;
+  }
+};
+
+const teamName = id => (S.st?.teams?.find(t => t.id === id) || {}).name || '?';
+const compName = id => (S.st?.comps?.find(c => c.id === id) || {}).name || id;
+const age = (b, d) => {
+  const y = parseInt(String(b || '').slice(0, 4));
+  return y ? (+String(d || new Date().toISOString()).slice(0, 4) - y) : '';
+};
+
+/* ───── каркас ───── */
+async function boot() {
+  try {
+    S.st = await api('/state');
+  } catch (x) {
+    $('#app').innerHTML = '<div class="empty">Сервер недоступен: ' + e(x.message) + '</div>';
+    return;
+  }
+  S.me = S.st.me;
+  if (S.tok && !S.me) {
+    S.tok = '';
+    localStorage.removeItem('tok');
+  }
+  drawChrome();
+  route();
+}
+
+function drawChrome() {
+  const links = [
+    ['#/', 'Главная'],
+    ['#/table/rpl', 'Таблицы'],
+    ['#/fixtures/rpl', 'Расписание'],
+    ['#/leaders', 'Статистика'],
+    ['#/regulations', 'Регламент']
+  ];
+  if (S.me?.role === 'club') links.push(['#/club', 'Мой клуб']);
+  if (S.me?.role === 'admin') links.push(['#/club', 'Клуб'], ['#/admin', 'Админка']);
+  const cur = location.hash || '#/';
+  $('#nav').innerHTML = links.map(([h, t]) => `<a href="${h}" class="${cur.split('/')[1] === h.split('/')[1] && (h !== '#/' || cur === '#/' || cur === '#') ? 'on' : ''}">${t}</a>`).join('');
+  $('#who').innerHTML = S.me ? `<span>${S.me.role === 'admin' ? 'Администратор' : e(teamName(S.me.teamId))}</span><button id="out">Выйти</button>` : '<a href="#/login" style="color:#fff;font-weight:600">Войти по коду</a>';
+  $('#out') && ($('#out').onclick = async () => {
+    await api('/logout', {}).catch(() => {});
+    S.tok = '';
+    localStorage.removeItem('tok');
+    S.me = null;
+    S.st.me = null;
+    drawChrome();
+    location.hash = '#/';
+  });
+}
+
+window.addEventListener('hashchange', () => { drawChrome(); route(); });
+
+function route() {
+  if (S.es) { S.es.close(); S.es = null; }
+  const [, page, a, b] = (location.hash || '#/').split('/');
+  const app = $('#app');
+  scrollTo(0, 0);
+  const R = { '': pgHome, undefined: pgHome, table: pgTable, fixtures: pgFixtures, match: pgMatch, leaders: pgLeaders, regulations: pgRegulations, club: pgClub, admin: pgAdmin, login: pgLogin };
+  (R[page] || pgHome)(app, a, b).catch(x => {
+    app.innerHTML = `<div class="panel warn">${e(x.message)}</div>`;
+  });
+}
+
+const fxRow = f => {
+  const sc = f.status === 'scheduled' || f.status === 'queued' || f.status === 'generating' ? f.time : `${f.hg}:${f.ag}`;
+  const link = f.full || f.status === 'live' || f.status === 'done';
+  const st = f.status === 'live' ? '<span class="tag live">LIVE</span>' : (f.status === 'generating' || f.status === 'queued' ? '<span class="tag">готовится</span>' : '');
+  const homeLogo = f.homeLogo || teamLogo(f.home);
+  const awayLogo = f.awayLogo || teamLogo(f.away);
+
+  return `<${link && f.full ? `a href="#/match/${f.id}" class="fxl"` : 'div'} class="fx${link && f.full ? ' fxl' : ''}">
+  <div class="d">${fmtD(f.date)}${f.status === 'scheduled' ? '' : ' · ' + f.time}</div>
+  <div class="t r">
+    <span class="t-name">${e(f.homeName)}</span>
+    ${homeLogo ? `<img class="t-logo md" src="${homeLogo}" alt="${e(f.homeName)}" loading="lazy" onerror="this.style.display='none'"/>` : ''}
+  </div>
+  <div class="sc">${sc}</div>
+  <div class="t">
+    ${awayLogo ? `<img class="t-logo md" src="${awayLogo}" alt="${e(f.awayName)}" loading="lazy" onerror="this.style.display='none'"/>` : ''}
+    <span class="t-name">${e(f.awayName)}</span>
+  </div>
+  <div class="x row" style="justify-content:flex-end;gap:5px">
+    ${f.derby ? '<span class="tag derby">дерби</span>' : ''}
+    ${st}
+    ${f.pen ? `<span class="tag">пен. ${f.pen.hg}:${f.pen.ag}</span>` : ''}
+  </div>
+</${link && f.full ? 'a' : 'div'}>`;
+};
+
+function renderTableLegend(comp, total) {
+  if (comp === 'rpl') {
+    return `<div class="table-legend">
+      <div class="table-legend-item"><span class="table-legend-dot gold"></span><b>1:</b> Чемпион России</div>
+      <div class="table-legend-item"><span class="table-legend-dot top"></span><b>2–3:</b> Призёры РПЛ</div>
+      <div class="table-legend-item"><span class="table-legend-dot playoff"></span><b>13–14:</b> Стыковые матчи с Первой лигой</div>
+      <div class="table-legend-item"><span class="table-legend-dot bad"></span><b>15–16:</b> Прямой вылет в Первую лигу</div>
+      <a href="#/regulations" style="margin-left:auto;font-weight:600;color:var(--green)">Регламент ротации →</a>
+    </div>`;
+  }
+  if (comp === 'fnl') {
+    return `<div class="table-legend">
+      <div class="table-legend-item"><span class="table-legend-dot top"></span><b>1–2:</b> Прямой выход в РПЛ</div>
+      <div class="table-legend-item"><span class="table-legend-dot playoff"></span><b>3–4:</b> Стыковые матчи за выход в РПЛ</div>
+      <div class="table-legend-item"><span class="table-legend-dot bad"></span><b>17–18:</b> Вылет во Вторую лигу «А»</div>
+      <a href="#/regulations" style="margin-left:auto;font-weight:600;color:var(--green)">Регламент ротации →</a>
+    </div>`;
+  }
+  if (comp === '2la_gold') {
+    return `<div class="table-legend">
+      <div class="table-legend-item"><span class="table-legend-dot top"></span><b>1–2:</b> Прямой выход в Первую лигу</div>
+      <div class="table-legend-item"><span class="table-legend-dot playoff"></span><b>3:</b> Стыковой матч за Первую лигу</div>
+      <div class="table-legend-item"><span class="table-legend-dot bad"></span><b>7–10:</b> Ротация в группу «Серебро»</div>
+      <a href="#/regulations" style="margin-left:auto;font-weight:600;color:var(--green)">Регламент ротации →</a>
+    </div>`;
+  }
+  if (comp === '2la_silver') {
+    return `<div class="table-legend">
+      <div class="table-legend-item"><span class="table-legend-dot top"></span><b>1–4:</b> Повышение в группу «Золото»</div>
+      <div class="table-legend-item"><span class="table-legend-dot bad"></span><b>7–10:</b> Вылет во Вторую лигу «Б»</div>
+      <a href="#/regulations" style="margin-left:auto;font-weight:600;color:var(--green)">Регламент ротации →</a>
+    </div>`;
+  }
+  if (comp && comp.startsWith('2lb')) {
+    return `<div class="table-legend">
+      <div class="table-legend-item"><span class="table-legend-dot top"></span><b>1:</b> Прямой выход в «Серебро» (дивизион «А»)</div>
+      <div class="table-legend-item"><span class="table-legend-dot bad"></span><b>Аутсайдеры:</b> Зона вылета в Третью лигу</div>
+      <a href="#/regulations" style="margin-left:auto;font-weight:600;color:var(--green)">Регламент ротации →</a>
+    </div>`;
+  }
+  if (comp === 'media') {
+    return `<div class="table-legend">
+      <div class="table-legend-item"><span class="table-legend-dot top"></span><b>1–4:</b> 1/2 финала плей-офф MFL</div>
+      <div class="table-legend-item"><span class="table-legend-dot playoff"></span><b>5–8:</b> Квалификационные стыки плей-офф</div>
+      <a href="#/regulations" style="margin-left:auto;font-weight:600;color:var(--green)">Регламент лиги →</a>
+    </div>`;
+  }
+  return '';
+}
+
+const tableHtml = (rows, opts = {}) => {
+  const comp = opts.comp || 'rpl';
+  const getZone = (c, pos, total) => {
+    if (c === 'rpl') {
+      if (pos === 1) return { cls: 'zone-gold', label: 'Чемпион' };
+      if (pos <= 3) return { cls: 'zone-top', label: 'Призёры' };
+      if (pos >= 13 && pos <= 14) return { cls: 'zone-playoff', label: 'Стыки' };
+      if (pos >= 15) return { cls: 'zone-bad', label: 'Вылет' };
+    } else if (c === 'fnl') {
+      if (pos <= 2) return { cls: 'zone-top', label: 'В РПЛ' };
+      if (pos <= 4) return { cls: 'zone-playoff', label: 'Стыки' };
+      if (pos >= 17) return { cls: 'zone-bad', label: 'Вылет' };
+    } else if (c === '2la_gold') {
+      if (pos <= 2) return { cls: 'zone-top', label: 'В 1-ю лигу' };
+      if (pos === 3) return { cls: 'zone-playoff', label: 'Стыки' };
+      if (pos >= 7) return { cls: 'zone-bad', label: 'В Серебро' };
+    } else if (c === '2la_silver') {
+      if (pos <= 4) return { cls: 'zone-top', label: 'В Золото' };
+      if (pos >= 7) return { cls: 'zone-bad', label: 'Во 2-ю лигу Б' };
+    } else if (c && c.startsWith('2lb')) {
+      if (pos === 1) return { cls: 'zone-top', label: 'В «А»' };
+      if (pos >= total) return { cls: 'zone-bad', label: '3-я лига' };
+    } else if (c === 'media') {
+      if (pos <= 4) return { cls: 'zone-top', label: '1/2 финала' };
+      if (pos <= 8) return { cls: 'zone-playoff', label: 'Стыки' };
+    }
+    return { cls: '', label: '' };
+  };
+
+  const rowsHtml = rows.map(r => {
+    const logo = r.logo || teamLogo(r.id);
+    const z = r.zone ? { cls: r.zone, label: r.zoneLabel } : getZone(comp, r.pos, rows.length);
+    const badgeHtml = z.label ? `<span class="zone-badge ${z.cls.replace('zone-', '')}">${e(z.label)}</span>` : '';
+    return `<tr class="${z.cls}">
+    <td class="l">
+      <div class="t-cell">
+        <span class="pos">${r.pos}</span>
+        ${logo ? `<img class="t-logo" src="${logo}" alt="${e(r.name)}" loading="lazy" onerror="this.style.display='none'"/>` : ''}
+        <span>${e(r.name)}</span>
+        ${badgeHtml}
+      </div>
+    </td>
+    <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf}–${r.ga}</td><td>${r.gd > 0 ? '+' : ''}${r.gd}</td><td><b>${r.pts}</b></td><td class="l muted">${e(r.form)}</td></tr>`;
+  }).join('');
+
+  return `<div class="wrap"><table><thead><tr><th class="l">Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>РМ</th><th>О</th><th class="l">Форма</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${renderTableLegend(comp, rows.length)}`;
+};
+
+/* ───── вход ───── */
+async function pgLogin(app) {
+  app.innerHTML = `<h1>Вход</h1><div class="panel" style="max-width:420px"><label>Код клуба или администратора</label><input id="code" placeholder="XXXX-XXXX" autocomplete="off"><div class="row" style="margin-top:14px"><button class="btn" id="go">Войти</button></div><p class="muted small">Код клуба вам выдаёт администратор.</p></div>`;
+  const go = async () => {
+    const r = await act(() => api('/login', { code: $('#code').value }));
+    if (!r) return;
+    S.tok = r.token;
+    localStorage.setItem('tok', r.token);
+    S.st = await api('/state');
+    S.me = S.st.me;
+    drawChrome();
+    location.hash = r.role === 'admin' ? '#/admin' : '#/club';
+  };
+  $('#go').onclick = go;
+  $('#code').onkeydown = ev => ev.key === 'Enter' && go();
+  $('#code').focus();
+}
+
+/* ───── главная ───── */
+async function pgHome(app) {
+  const [fx, tb] = await Promise.all([api('/fixtures?comp=rpl'), api('/table/rpl')]);
+  const live = fx.filter(f => f.status === 'live');
+  const next = fx.filter(f => f.status === 'scheduled').slice(0, 6);
+  const last = fx.filter(f => f.status === 'done').slice(-6).reverse();
+  app.innerHTML = `<h1>Сезон ${e(S.st?.season || '2026/27')}</h1>
+  ${live.length ? `<div class="panel"><h3><span class="live-dot"></span>Сейчас идут</h3>${live.map(fxRow).join('')}</div>` : ''}
+  <div class="grid g2">
+    <div>
+      <div class="panel"><h3>Ближайшие матчи РПЛ</h3>${next.length ? next.map(fxRow).join('') : '<div class="empty">Расписание ещё не создано или сезон завершён.</div>'}</div>
+      <div class="panel"><h3>Последние результаты</h3>${last.length ? last.map(fxRow).join('') : '<div class="empty">Матчей пока не было.</div>'}</div>
+    </div>
+    <div class="panel">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <img src="/logos/leagues/rpl.svg" alt="РПЛ" style="width:26px;height:26px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));"/>
+        <h3 style="margin:0;">Таблица РПЛ</h3>
+      </div>
+      ${tb.some(r => r.p) || tb.length ? tableHtml(tb, { top: 3, bad: 2 }) : '<div class="empty">Нет команд</div>'}
+      <p class="small" style="margin-top:12px"><a href="#/table/rpl">Все турнирные таблицы с эмблемами лиг →</a></p>
+    </div>
+  </div>`;
+}
+
+function renderCompTabs(curComp, prefix = 'table') {
+  const groups = [
+    { id: 'rpl', name: 'РПЛ (16)', compId: 'rpl', logo: '/logos/leagues/rpl.svg' },
+    { id: 'cup', name: 'Кубок России', compId: 'cup', logo: '/logos/leagues/cup.svg' },
+    { id: 'fnl', name: 'Первая лига (18)', compId: 'fnl', logo: '/logos/leagues/fnl.svg' },
+    { id: '2la', name: 'Вторая лига «А»', compId: '2la_gold', logo: '/logos/leagues/2la.svg', children: [
+      { id: '2la_gold', name: '🥇 Группа «Золото» (10)' },
+      { id: '2la_silver', name: '🥈 Группа «Серебро» (10)' }
+    ]},
+    { id: '2lb', name: 'Вторая лига «Б»', compId: '2lb_1', logo: '/logos/leagues/2lb.svg', children: [
+      { id: '2lb_1', name: 'Группа 1 · Юг (16)' },
+      { id: '2lb_2', name: 'Группа 2 · Запад (15)' },
+      { id: '2lb_3', name: 'Группа 3 · Центр (16)' },
+      { id: '2lb_4', name: 'Группа 4 · Урал (12)' }
+    ]},
+    { id: 'media', name: 'Медиалига (16)', compId: 'media', logo: '/logos/leagues/media.svg' }
+  ];
+
+  const activeGroup = groups.find(g => g.compId === curComp || g.children?.some(c => c.id === curComp)) || groups[0];
+
+  let html = `<div class="tabs">${groups.map(g => {
+    const isAct = g.id === activeGroup.id;
+    return `<button class="${isAct ? 'on' : ''}" data-nav="${g.compId}"><img src="${g.logo}" alt="" class="tab-comp-icon"/><span>${e(g.name)}</span></button>`;
+  }).join('')}</div>`;
+
+  if (activeGroup.children) {
+    html += `<div class="tabs sub-tabs" style="margin-top:-6px;margin-bottom:14px;background:var(--soft);padding:6px 8px;border-radius:8px;">${activeGroup.children.map(c => {
+      const isAct = c.id === curComp;
+      return `<button class="${isAct ? 'on' : ''}" style="font-size:13px;padding:4px 10px;border-bottom-width:2px;" data-nav="${c.id}">${e(c.name)}</button>`;
+    }).join('')}</div>`;
+  }
+
+  return html;
+}
+
+async function pgTable(app, comp = 'rpl') {
+  const rows = await api('/table/' + comp);
+  const cf = comp === 'cup' ? await api('/fixtures?comp=cup') : null;
+  const currentCompObj = (S.st?.comps || []).find(c => c.id === comp);
+  const title = currentCompObj?.name || 'Таблицы';
+  const logoUrl = compLogo(comp);
+
+  app.innerHTML = `
+  <div class="comp-banner" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <img src="${logoUrl}" alt="${e(title)}" class="comp-banner-logo" onerror="this.style.display='none'"/>
+      <div>
+        <h1 class="comp-banner-title">${e(title)}</h1>
+        <div class="comp-banner-sub">${e(currentCompObj?.level || 'Сезон ' + (S.st?.season || '2026/27'))}${rows.length ? ' · ' + rows.length + ' команд' : ''}</div>
+      </div>
+    </div>
+    <a href="#/regulations" class="btn alt sm" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;">🔄 Регламент и ротация лиг</a>
+  </div>
+  ${renderCompTabs(comp, 'table')}
+  ${comp === 'cup' ? (cf && cf.length ? [...new Set(cf.map(f => f.label))].map(l => `<div class="panel"><h3>${e(l)}</h3>${cf.filter(f => f.label === l).map(fxRow).join('')}</div>`).join('') : '<div class="empty">Сетка кубка появится после создания сезона.</div>') : `<div class="panel">${rows.length ? tableHtml(rows, { comp }) : '<div class="empty">В этом турнире нет команд.</div>'}</div>`}`;
+  app.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => location.hash = '#/table/' + b.dataset.nav);
+}
+
+async function pgFixtures(app, comp = 'rpl', round) {
+  const all = await api('/fixtures?comp=' + comp);
+  const rounds = [...new Set(all.map(f => f.label))];
+  let cur = round ? decodeURIComponent(round) : (all.find(f => f.status !== 'done') || all[all.length - 1] || {}).label;
+  const list = all.filter(f => f.label === cur), i = rounds.indexOf(cur);
+  const currentCompObj = (S.st?.comps || []).find(c => c.id === comp);
+  const title = currentCompObj?.name || 'Расписание';
+  const logoUrl = compLogo(comp);
+
+  app.innerHTML = `
+  <div class="comp-banner">
+    <img src="${logoUrl}" alt="${e(title)}" class="comp-banner-logo" onerror="this.style.display='none'"/>
+    <div>
+      <h1 class="comp-banner-title">${e(title)} · Расписание</h1>
+      <div class="comp-banner-sub">${e(currentCompObj?.level || 'Сезон ' + (S.st?.season || '2026/27'))}</div>
+    </div>
+  </div>
+  ${renderCompTabs(comp, 'fixtures')}
+  ${all.length ? `<div class="row sp" style="margin-bottom:12px"><button class="btn alt sm" id="pv" ${i <= 0 ? 'disabled' : ''}>← Назад</button><b>${e(cur)}</b><button class="btn alt sm" id="nx" ${i >= rounds.length - 1 ? 'disabled' : ''}>Вперёд →</button></div><div class="panel">${list.map(fxRow).join('')}</div>` : '<div class="empty panel">Расписание ещё не создано — администратор сделает это в разделе «Админка».</div>'}`;
+  app.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => location.hash = '#/fixtures/' + b.dataset.nav);
+  $('#pv') && ($('#pv').onclick = () => location.hash = `#/fixtures/${comp}/${encodeURIComponent(rounds[i - 1])}`);
+  $('#nx') && ($('#nx').onclick = () => location.hash = `#/fixtures/${comp}/${encodeURIComponent(rounds[i + 1])}`);
+}
+
+/* ───── матч ───── */
+const EVI = { goal: '⚽', own_goal: '⚽', yellow: '🟨', red: '🟥', injury: '🚑', penalty: '🎯', var: '📺', ref_error: '🧑‍⚖️', halftime: '⏸', fulltime: '🏁', highlight: '🔥', incident: '❗', save: '🧤', post: '🥅', sub: '🔁', corner: '🚩', foul: '✋', shot: '💥', miss: '↗', tackle: '🛡', kickoff: '▶', offside: '🚫', freekick: '🎯', possession: '·', pass: '·', dribble: '·', duel: '·' };
+let M = null, evs = [], mtab = 'live';
+
+async function pgMatch(app, id) {
+  M = await api('/match/' + id);
+  evs = (M.events || []).slice();
+  if (!M.fixture) return;
+  mtab = 'live';
+  drawMatch(app, id);
+  if (M.fixture.status === 'live') {
+    S.es = new EventSource('/api/live/' + id);
+    S.es.onmessage = m => {
+      const d = JSON.parse(m.data);
+      if (d.type === 'event') {
+        if (!evs.some(x => x.i === d.e.i)) evs.push(d.e);
+        M.fixture.hg = d.e.score[0];
+        M.fixture.ag = d.e.score[1];
+        paintMatch();
+        if (['goal', 'red', 'yellow'].includes(d.e.type)) refreshStats(id);
+      } else if (d.type === 'end') {
+        api('/match/' + id).then(x => { M = x; evs = (x.events || []).slice(); drawMatch(app, id); });
+        S.es.close();
+      }
+    };
+  }
+  if (M.fixture.status === 'scheduled' || M.fixture.status === 'queued' || M.fixture.status === 'generating') {
+    const t = setInterval(async () => {
+      if (!location.hash.includes(id)) return clearInterval(t);
+      const x = await api('/match/' + id);
+      if (x.fixture.status !== M.fixture.status) { clearInterval(t); pgMatch(app, id); }
+    }, 4000);
+  }
+}
+
+async function refreshStats(id) {
+  try {
+    const x = await api('/match/' + id);
+    M.stats = x.stats;
+    if (mtab === 'stats') paintMatch();
+  } catch { }
+}
+
+function drawMatch(app, id) {
+  const f = M.fixture, c = M.ctx;
+  const homeLogo = f.homeLogo || teamLogo(f.home);
+  const awayLogo = f.awayLogo || teamLogo(f.away);
+
+  app.innerHTML = `<div class="score">
+  <div class="meta">${e(c ? c.comp + ', ' + c.roundLabel : f.label)} · ${fmtD(f.date)} ${f.time}${c && c.stadium ? ' · ' + e(c.stadium) : ''}</div>
+  <div class="line">
+    <div class="tm-box r">
+      <div class="tm r">${e(f.homeName)}</div>
+      ${homeLogo ? `<img class="t-logo lg" src="${homeLogo}" alt="${e(f.homeName)}"/>` : ''}
+    </div>
+    <div class="num" id="sc">${f.hg == null ? '—' : f.hg + ' : ' + f.ag}</div>
+    <div class="tm-box">
+      ${awayLogo ? `<img class="t-logo lg" src="${awayLogo}" alt="${e(f.awayName)}"/>` : ''}
+      <div class="tm">${e(f.awayName)}</div>
+    </div>
+  </div>
+  <div class="meta" id="sub">${f.status === 'live' ? '<span class="live-dot"></span>Идёт матч' : f.status === 'done' ? 'Матч завершён' + (f.pen ? ` · по пенальти ${f.pen.hg}:${f.pen.ag}` : '') : f.status === 'generating' || f.status === 'queued' ? 'Матч готовится…' : 'Матч ещё не начался'}</div>
+  ${c ? `<div class="meta" style="margin-top:6px">${e(c.weather)}${c.derby && c.derby !== 'нет' ? ' · ' + e(c.derby.split('.')[0]) : ''}</div>` : ''}
+</div>
+<div class="tabs" id="mt">${[['live', 'Трансляция'], ['stats', 'Статистика'], ['lineups', 'Составы'], ...(S.me?.role === 'admin' ? [['admin', 'Админ']] : [])].map(([k, t]) => `<button data-k="${k}" class="${k === mtab ? 'on' : ''}">${t}</button>`).join('')}</div>
+<div id="mbody"></div>`;
+
+  $('#mt').onclick = ev => {
+    const k = ev.target.dataset.k;
+    if (k) {
+      mtab = k;
+      document.querySelectorAll('#mt button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+      paintMatch();
+    }
+  };
+  paintMatch();
+}
+
+function paintMatch() {
+  const f = M.fixture;
+  $('#sc') && ($('#sc').textContent = f.hg == null ? '—' : f.hg + ' : ' + f.ag);
+  const b = $('#mbody');
+  if (!b) return;
+
+  if (mtab === 'live') {
+    if (!evs.length) {
+      b.innerHTML = `<div class="empty panel">${f.status === 'scheduled' ? 'Трансляция начнётся, когда матч будет запущен.' : 'Ждём первые события…'}</div>`;
+      return;
+    }
+    b.innerHTML = '<div class="panel">' + [...evs].reverse().map(x => {
+      const cls = x.type === 'goal' || x.type === 'own_goal' ? 'goal' : x.type === 'red' ? 'red' : ['yellow', 'injury', 'penalty', 'var', 'ref_error', 'highlight', 'incident', 'halftime', 'fulltime'].includes(x.type) ? 'key' : '';
+      const tLogo = x.team === 'home' ? (f.homeLogo || teamLogo(f.home)) : (x.team === 'away' ? (f.awayLogo || teamLogo(f.away)) : null);
+      return `<div class="ev ${cls}">
+        <div class="m">${x.min}:${String(x.sec).padStart(2, '0')}</div>
+        <div>${tLogo ? `<img class="t-logo" src="${tLogo}" alt=""/>` : (EVI[x.type] || '·')}</div>
+        <div>${e(x.text)}${cls && x.players?.length ? `<div class="pl">${e(x.players.join(', '))}</div>` : ''}${x.type === 'goal' || x.type === 'own_goal' ? `<div class="pl"><b>${x.score[0]}:${x.score[1]}</b></div>` : ''}</div>
+      </div>`;
+    }).join('') + '</div>';
+  } else if (mtab === 'stats') {
+    const s = M.stats;
+    if (!s) { b.innerHTML = '<div class="empty panel">Статистика появится после начала матча.</div>'; return; }
+    const H = s.teams.home, A = s.teams.away;
+    const bar = (n, h, a) => {
+      const t = (+h + +a) || 1;
+      return `<div class="bar2"><div class="v">${h}</div><div><div class="c">${n}</div><div class="bb"><i style="width:${h / t * 100}%"></i><i style="width:${a / t * 100}%"></i></div></div><div class="v">${a}</div></div>`;
+    };
+    const pl = Object.values(s.players).sort((a, b) => b.min - a.min);
+    b.innerHTML = `<div class="panel">
+      ${bar('Владение, %', s.poss[0], s.poss[1])}
+      ${bar('Удары', H.sh, A.sh)}
+      ${bar('В створ', H.sot, A.sot)}
+      ${bar('xG', H.xg, A.xg)}
+      ${bar('Угловые', H.co, A.co)}
+      ${bar('Фолы', H.fo, A.fo)}
+      ${bar('Отборы', H.tk, A.tk)}
+      ${bar('Сейвы', H.sv, A.sv)}
+      ${bar('Офсайды', H.off, A.off)}
+      ${bar('Жёлтые', H.yc, A.yc)}
+      ${bar('Красные', H.rc, A.rc)}
+      ${bar('Пенальти', H.penF, A.penF)}
+    </div>
+    <div class="panel wrap"><table><thead><tr><th class="l">Игрок</th><th>Мин</th><th>Г</th><th>П</th><th>Уд</th><th>xG</th><th>Отб</th><th>Сейвы</th><th>Фолы</th><th>ЖК</th><th>КК</th></tr></thead><tbody>${pl.map(p => `<tr><td class="l">${e(p.n)} <span class="muted small">${p.side === 'home' ? e(M.fixture.homeName) : e(M.fixture.awayName)}</span></td><td>${p.min}</td><td>${p.g}</td><td>${p.a}</td><td>${p.sh}</td><td>${p.xg}</td><td>${p.tk}</td><td>${p.sv}</td><td>${p.ff}/${p.fa}</td><td>${p.yc}</td><td>${p.rc}</td></tr>`).join('')}</tbody></table></div>`;
+  } else if (mtab === 'lineups') {
+    const L = M.lineups;
+    if (!L) { b.innerHTML = '<div class="empty panel">Составы откроются после начала матча.</div>'; return; }
+    b.innerHTML = '<div class="grid g2">' + ['home', 'away'].map(s => {
+      const logo = L[s].logo || (s === 'home' ? f.homeLogo : f.awayLogo);
+      return `<div class="panel">
+        <div class="row" style="margin-bottom:12px">
+          ${logo ? `<img class="t-logo md" src="${logo}" alt=""/>` : ''}
+          <h3 style="margin:0">${e(L[s].name)} · ${e(L[s].formation)}</h3>
+        </div>
+        ${L[s].starters.map(p => `<div>${e(p.pos)} ${e(p.name)}</div>`).join('')}
+        <h3 style="margin-top:14px">Скамейка</h3>
+        <div class="muted small">${L[s].bench.map(p => e(p.name)).join(', ') || '—'}</div>
+        <h3 style="margin-top:14px">Речь тренера</h3>
+        <div class="qa">${e(L[s].speech || '(молчание)')}</div>
+        ${L[s].training != null ? `<h3 style="margin-top:14px">Тренировки</h3><div class="qa">${e(L[s].training || '—')}</div>` : ''}
+      </div>`;
+    }).join('') + '</div>';
+  } else if (mtab === 'admin') {
+    const c = M.ctx || {};
+    b.innerHTML = `<div class="panel">
+      <h3>Вопрос по матчу</h3>
+      <div class="row"><input id="q" placeholder="Почему проиграла эта команда? Как сыграл такой-то игрок?" style="flex:1;min-width:240px"><button class="btn" id="ask" ${f.status !== 'done' ? 'disabled' : ''}>Спросить</button></div>
+      ${f.status !== 'done' ? '<p class="muted small">Вопросы доступны после окончания матча.</p>' : ''}
+      <div id="ans"></div>
+    </div>
+    ${M.err ? `<div class="warn">Последняя ошибка запуска: ${e(M.err)}</div>` : ''}
+    ${M.fallback ? '<div class="warn">Часть матча сгенерирована запасным генератором.</div>' : ''}
+    <div class="panel">
+      <h3>Контекст, который получила нейросеть</h3>
+      <div class="small">
+        <p><b>Мотивация:</b> ${e(c.motiv?.home)}<br>${e(c.motiv?.away)}</p>
+        <p><b>Усталость:</b> ${e(c.fat?.home)}<br>${e(c.fat?.away)}</p>
+        <p><b>Гонка бомбардиров:</b> ${e(c.race)}</p>
+      </div>
+    </div>`;
+    $('#ask').onclick = async () => {
+      $('#ans').innerHTML = '<div class="qa">Думаю…</div>';
+      try {
+        const r = await api('/admin/ask', { fid: f.id, question: $('#q').value });
+        $('#ans').innerHTML = `<div class="qa">${e(r.answer)}</div>`;
+      } catch (x) {
+        $('#ans').innerHTML = `<div class="warn">${e(x.message)}</div>`;
+      }
+    };
+  }
+}
+
+/* ───── статистика ───── */
+let LD = { comp: 'rpl', view: 'p', metric: 'g', sort: 'g' };
+async function pgLeaders(app) {
+  const d = await api('/leaders?comp=' + LD.comp);
+  const PM = [['g', 'Голы'], ['a', 'Передачи'], ['ga', 'Гол+пас'], ['xg', 'xG'], ['sh', 'Удары'], ['tk', 'Отборы'], ['sv', 'Сейвы'], ['cs', 'Сухие матчи'], ['ff', 'Фолы (совершил)'], ['fa', 'Фолы (на нём)'], ['yc', 'Жёлтые'], ['rc', 'Красные']];
+  const TC = [['m', 'И'], ['g', 'Г'], ['ga', 'ПР'], ['xg', 'xG'], ['xga', 'xGA'], ['co', 'Угл'], ['penF', 'Пен+'], ['penA', 'Пен−'], ['refF', 'Суд+'], ['refA', 'Суд−'], ['fo', 'Фолы'], ['foA', 'Фолы пр.'], ['yc', 'ЖК'], ['rc', 'КК'], ['tk', 'Отб'], ['sv', 'Сейвы'], ['cs', 'Сухие']];
+  const pc = [...d.players.reduce((m, x) => {
+    const o = m.get(x.pid) || { ...x, m: 0 };
+    if (m.has(x.pid)) for (const k of ['min', 'g', 'a', 'yc', 'rc', 'tk', 'sv', 'sh', 'xg', 'ff', 'fa', 'cs', 'm']) o[k] += x[k];
+    m.set(x.pid, o);
+    return m;
+  }, new Map()).values()].map(x => ({ ...x, ga: x.g + x.a }));
+
+  app.innerHTML = `<h1>Статистика</h1><div class="tabs">${(S.st?.comps || []).filter(c => c.type === 'league' || c.id === 'cup').map(c => `<button data-c="${c.id}" class="${c.id === LD.comp ? 'on' : ''}">${e(c.name)}</button>`).join('')}</div>
+  <div class="tabs"><button data-v="p" class="${LD.view === 'p' ? 'on' : ''}">Игроки</button><button data-v="t" class="${LD.view === 't' ? 'on' : ''}">Команды</button></div>
+  ${LD.view === 'p' ? `<div class="row" style="margin-bottom:12px">${PM.map(([k, t]) => `<button class="btn sm ${k === LD.metric ? '' : 'alt'}" data-m="${k}">${t}</button>`).join('')}</div>
+    <div class="panel wrap">${pc.length ? `<table><thead><tr><th>#</th><th class="l">Игрок</th><th class="l">Команда</th><th>Матчи</th><th>${PM.find(x => x[0] === LD.metric)[1]}</th></tr></thead><tbody>${pc.filter(x => x[LD.metric] > 0).sort((a, b) => b[LD.metric] - a[LD.metric] || b.min - a.min).slice(0, 50).map((x, i) => `<tr><td class="pos">${i + 1}</td><td class="l">${e(x.n)}</td><td class="l muted"><div class="t-cell">${x.teamLogo ? `<img class="t-logo" src="${x.teamLogo}" alt=""/>` : ''}<span>${e(x.team)}</span></div></td><td>${x.m}</td><td><b>${LD.metric === 'xg' ? (+x[LD.metric]).toFixed(2) : x[LD.metric]}</b></td></tr>`).join('') || '<tr><td colspan="5" class="empty">Пока нет данных по этому показателю.</td></tr>'}</tbody></table>` : '<div class="empty">Статистика появится после первых полностью сыгранных матчей.</div>'}</div>`
+  : `<div class="panel wrap">${d.teams.length ? `<table><thead><tr><th class="l">Команда</th>${TC.map(([k, t]) => `<th class="s" data-s="${k}">${t}${LD.sort === k ? ' ▾' : ''}</th>`).join('')}</tr></thead><tbody>${[...d.teams].map(x => ({ ...x })).sort((a, b) => (b[LD.sort] || 0) - (a[LD.sort] || 0)).map(x => `<tr><td class="l"><div class="t-cell">${x.teamLogo ? `<img class="t-logo" src="${x.teamLogo}" alt=""/>` : ''}<span>${e(x.team)}</span></div></td>${TC.map(([k]) => `<td>${k === 'xg' || k === 'xga' ? (+x[k]).toFixed(2) : (x[k] || 0)}</td>`).join('')}</tr>`).join('')}</tbody></table><p class="small muted">Суд+ — ошибки арбитра в пользу команды, Суд− — против. Пен+ / Пен− — пенальти в пользу / против. ПР — пропущенные мячи.</p>` : '<div class="empty">Статистика команд появится после первых сыгранных матчей.</div>'}</div>`}`;
+
+  app.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { LD.comp = b.dataset.c; pgLeaders(app); });
+  app.querySelectorAll('[data-v]').forEach(b => b.onclick = () => { LD.view = b.dataset.v; pgLeaders(app); });
+  app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { LD.metric = b.dataset.m; pgLeaders(app); });
+  app.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { LD.sort = b.dataset.s; pgLeaders(app); });
+}
+
+/* ───── регламент соревнований и переходов ───── */
+let REG_TAB = 'all';
+async function pgRegulations(app, reqTab) {
+  if (reqTab) REG_TAB = reqTab;
+
+  const tabs = [
+    { id: 'all', name: 'Все лиги' },
+    { id: 'rpl_fnl', name: 'РПЛ ⇄ 1-я лига' },
+    { id: 'fnl_2la', name: '1-я лига ⇄ 2-я «А»' },
+    { id: '2la_rot', name: '2-я «А» (Золото ⇄ Серебро)' },
+    { id: '2la_2lb', name: '2-я «А» ⇄ «Б»' },
+    { id: '2lb_3l', name: '2-я «Б» ⇄ 3-я лига' },
+    { id: 'media', name: 'Медиалига (MFL)' }
+  ];
+
+  const cards = [
+    {
+      id: 'rpl_fnl',
+      title: '🚪 РПЛ ⇄ Первая лига (Система «осень-весна»)',
+      sub: '1-й уровень ⇄ 2-й уровень · Сезон: июль—май',
+      logos: ['/logos/leagues/rpl.svg', '/logos/leagues/fnl.svg'],
+      badge: 'Высший эшелон',
+      steps: [
+        {
+          icon: '🔻',
+          title: 'Прямой вылет из РПЛ',
+          desc: 'Команды, занявшие <b>15-е и 16-е места</b> в РПЛ, напрямую вылетают в Первую лигу на следующий сезон.'
+        },
+        {
+          icon: '🔺',
+          title: 'Прямой выход из Первой лиги',
+          desc: 'Две лучшие команды Первой лиги (<b>1-е и 2-е места</b>) напрямую поднимаются в Российскую Премьер-Лигу.'
+        },
+        {
+          icon: '⚔️',
+          title: 'Переходные стыковые матчи (стыки)',
+          desc: 'Стыки играются парами крест-накрест: <b>13-е место РПЛ против 4-го места Первой лиги</b> и <b>14-е место РПЛ против 3-го места Первой лиги</b>.'
+        },
+        {
+          icon: '📋',
+          title: 'Формат стыковых игр',
+          desc: 'Двухматчевые противостояния. <b>1-й матч</b> проводится на поле команды Первой лиги, <b>2-й (ответный) матч</b> — на поле команды РПЛ. В случае ничейного суммарного счёта по сумме двух встреч назначается <b>дополнительное время (2 тайма по 15 минут)</b>, а затем при необходимости — <b>серия пенальти</b>. <i>Важно: правило выездного гола не применяется!</i>'
+        }
+      ]
+    },
+    {
+      id: 'fnl_2la',
+      title: '🔄 Первая лига ⇄ Вторая лига «А» (Группа «Золото»)',
+      sub: '2-й уровень ⇄ 3-й уровень · Летний переход',
+      logos: ['/logos/leagues/fnl.svg', '/logos/leagues/2la.svg'],
+      badge: 'Профессиональный стык',
+      steps: [
+        {
+          icon: '🔻',
+          title: 'Вылет из Первой лиги',
+          desc: 'По итогам сезона из Первой лиги выбывают команды, занявшие <b>17-е и 18-е места</b>, опускаясь в группу «Золото» Второй лиги дивизиона «А».'
+        },
+        {
+          icon: '🔺',
+          title: 'Прямой выход из группы «Золото»',
+          desc: 'Команды, занявшие <b>1-е и 2-е места</b> по итогам весеннего этапа группы «Золото», напрямую получают путёвки в Первую лигу.'
+        },
+        {
+          icon: '⚔️',
+          title: 'Стыковые матчи за повышение / 3-я путёвка',
+          desc: '<b>3-е место весеннего этапа</b> играет стыковой матч с победителем осеннего этапа группы «Золото». Если победитель осени уже занял 1-е или 2-е место весной, 3-я команда поднимается в Первую лигу напрямую без стыков.'
+        }
+      ]
+    },
+    {
+      id: '2la_rot',
+      title: '🥇🥈 Вторая лига «А»: группа «Золото» ⇄ группа «Серебро»',
+      sub: 'Внутренняя ротация каждые полгода! · 40% состава групп обновляется каждые 6 месяцев',
+      logos: ['/logos/leagues/2la.svg'],
+      badge: 'Уникальная система РФС',
+      steps: [
+        {
+          icon: '🔄',
+          title: 'Полугодичные этапы (Осень и Весна)',
+          desc: 'Дивизион «А» разделён на 2 группы по 10 команд. Сезон разбит на два автономных турнира: осенний (июль—ноябрь) и весенний (март—июнь).'
+        },
+        {
+          icon: '🔻',
+          title: 'Понижение из «Золота» в «Серебро»',
+          desc: 'Каждые полгода <b>4 худшие команды</b> группы «Золото» (<b>7, 8, 9 и 10 места</b>) опускаются в группу «Серебро».'
+        },
+        {
+          icon: '🔺',
+          title: 'Повышение из «Серебра» в «Золото»',
+          desc: 'Каждые полгода <b>4 лучшие команды</b> группы «Серебро» (<b>1, 2, 3 и 4 места</b>) поднимаются в группу «Золото».'
+        },
+        {
+          icon: '⚖️',
+          title: 'Сохранение прописки',
+          desc: 'Команды, занявшие <b>4, 5 и 6 места</b> в «Золоте», и <b>5 и 6 места</b> в «Серебре», сохраняют своё участие в тех же группах на следующий полугодичный этап.'
+        }
+      ]
+    },
+    {
+      id: '2la_2lb',
+      title: '🥈🥉 Вторая лига «А» («Серебро») ⇄ Вторая лига «Б»',
+      sub: '3-й уровень ⇄ 4-й уровень · Синхронизация разных систем календаря',
+      logos: ['/logos/leagues/2la.svg', '/logos/leagues/2lb.svg'],
+      badge: 'Годовой обмен без стыков',
+      steps: [
+        {
+          icon: '📅',
+          title: 'Календарное различие дивизионов',
+          desc: 'Дивизион «А» играет по системе «осень-весна», тогда как Дивизион «Б» проводит первенство по классической системе <b>«весна-осень»</b> (март—ноябрь).'
+        },
+        {
+          icon: '🔻',
+          title: 'Вылет из дивизиона «А»',
+          desc: 'По итогам <b>весеннего этапа</b> группы «Серебро» <b>4 худшие команды (7, 8, 9 и 10 места)</b> покидают дивизион «А» и выбывают во Вторую лигу «Б».'
+        },
+        {
+          icon: '🔺',
+          title: 'Прямой выход победителей групп дивизиона «Б»',
+          desc: '<b>4 победителя</b> географических групп Второй лиги «Б» (<b>1-е места</b> Группы 1 «Юг», Группы 2 «Запад», Группы 3 «Центр» и Группы 4 «Урал-Сибирь») <b>напрямую поднимаются</b> в группу «Серебро» дивизиона «А». <b>Стыковые матчи не проводятся</b>.'
+        }
+      ]
+    },
+    {
+      id: '2lb_3l',
+      title: '🏟️ Вторая лига «Б» ⇄ Третья лига (Любительский футбол / КФК)',
+      sub: '4-й уровень ⇄ 5-й уровень (Профессионалы ⇄ Любители)',
+      logos: ['/logos/leagues/2lb.svg'],
+      badge: 'Профессиональный статус',
+      steps: [
+        {
+          icon: '🔻',
+          title: 'Вылет в любительские соревнования',
+          desc: 'Команды, занявшие последние места в группах дивизиона «Б», либо не прошедшие процедуру лицензирования РФС на следующий сезон, утрачивают профессиональный статус и выбывают в <b>Третью лигу</b> (региональные МРО).'
+        },
+        {
+          icon: '🔺',
+          title: 'Выход любительских клубов в профи',
+          desc: 'Победители зональных первенств Третьей лиги и финалисты Кубка среди любительских команд получают право подать заявку и пройти лицензирование РФС для вступления во Вторую лигу «Б».'
+        }
+      ]
+    },
+    {
+      id: 'media',
+      title: '🔥 Winline Медийная Футбольная Лига (MFL)',
+      sub: 'Медийный футбол · 16 медиаклубов',
+      logos: ['/logos/leagues/media.svg'],
+      badge: 'Медийный регламент',
+      steps: [
+        {
+          icon: '⏱️',
+          title: 'Чистое игровое время',
+          desc: 'Матчи состоят из 2 таймов по 25 минут чистого игрового времени (секундомер останавливается при паузах).'
+        },
+        {
+          icon: '🔴',
+          title: 'Специальные правила MFL',
+          desc: 'Красный мяч (гол засчитывается за 2 очка при ударе во время действия бонуса), буллиталити (комбинация буллита и пенальти) вместо классических послематчевых 11-метровых.'
+        },
+        {
+          icon: '🏆',
+          title: 'Сетка плей-офф',
+          desc: '<b>1–4 места</b> регулярного чемпионата напрямую выходят в <b>1/2 финала</b>. Команды с <b>5 по 8 места</b> проводят квалификационные стыковые матчи (раунд плей-ин) за оставшиеся путевки в финальную часть.'
+        }
+      ]
+    }
+  ];
+
+  const visibleCards = REG_TAB === 'all' ? cards : cards.filter(c => c.id === REG_TAB);
+
+  app.innerHTML = `
+  <div class="comp-banner" style="background:linear-gradient(135deg,#0d2917 0%,#144327 100%);color:#fff;border-radius:12px;padding:24px;margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span style="font-size:36px;">🔄</span>
+      <div>
+        <h1 style="margin:0 0 4px 0;font-size:24px;color:#fff;">Система ротации и регламент лиг</h1>
+        <div style="font-size:13.5px;color:#a3e0b8;">Официальные правила переходов между дивизионами российского футбола (сезон 2026/2027)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" style="margin-bottom:18px;">
+    ${tabs.map(t => `<button class="${t.id === REG_TAB ? 'on' : ''}" data-reg="${t.id}"><span>${e(t.name)}</span></button>`).join('')}
+  </div>
+
+  <div class="reg-container">
+    ${visibleCards.map(c => `
+      <div class="reg-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap;">
+          <div>
+            <span class="reg-badge">${e(c.badge)}</span>
+            <h2 style="font-size:18px;margin:2px 0 4px 0;color:var(--text);">${e(c.title)}</h2>
+            <div class="muted small">${e(c.sub)}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            ${c.logos.map(l => `<img src="${l}" alt="" style="height:32px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));"/>`).join('')}
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          ${c.steps.map(s => `
+            <div class="reg-step">
+              <span class="reg-icon">${s.icon}</span>
+              <div>
+                <div style="font-weight:700;font-size:13.5px;margin-bottom:2px;color:var(--text);">${e(s.title)}</div>
+                <div style="font-size:13px;line-height:1.5;color:var(--muted);">${s.desc}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('')}
+  </div>
+
+  <div class="panel" style="margin-top:20px;">
+    <h3>Сводная иерархия лиг России (2026/2027)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px;">
+      <a href="#/table/rpl" class="card" style="text-decoration:none;display:block;padding:14px;background:var(--soft);border-radius:8px;border:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <img src="/logos/leagues/rpl.svg" alt="" style="width:24px;height:24px;object-fit:contain;"/>
+          <b style="color:var(--text);">РПЛ · 1-й уровень</b>
+        </div>
+        <div class="small muted">16 клубов · Осень-весна · 15–16 вылет, 13–14 стыки</div>
+      </a>
+      <a href="#/table/fnl" class="card" style="text-decoration:none;display:block;padding:14px;background:var(--soft);border-radius:8px;border:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <img src="/logos/leagues/fnl.svg" alt="" style="width:24px;height:24px;object-fit:contain;"/>
+          <b style="color:var(--text);">Первая лига · 2-й уровень</b>
+        </div>
+        <div class="small muted">18 клубов · 1–2 выход, 3–4 стыки, 17–18 вылет</div>
+      </a>
+      <a href="#/table/2la_gold" class="card" style="text-decoration:none;display:block;padding:14px;background:var(--soft);border-radius:8px;border:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <img src="/logos/leagues/2la.svg" alt="" style="width:24px;height:24px;object-fit:contain;"/>
+          <b style="color:var(--text);">2-я лига «А» «Золото»</b>
+        </div>
+        <div class="small muted">10 клубов · Ротация каждые полгода · 7–10 в Серебро</div>
+      </a>
+      <a href="#/table/2la_silver" class="card" style="text-decoration:none;display:block;padding:14px;background:var(--soft);border-radius:8px;border:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <img src="/logos/leagues/2la.svg" alt="" style="width:24px;height:24px;object-fit:contain;"/>
+          <b style="color:var(--text);">2-я лига «А» «Серебро»</b>
+        </div>
+        <div class="small muted">10 клубов · 1–4 в Золото · 7–10 вылет во 2-ю лигу «Б»</div>
+      </a>
+      <a href="#/table/2lb_1" class="card" style="text-decoration:none;display:block;padding:14px;background:var(--soft);border-radius:8px;border:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <img src="/logos/leagues/2lb.svg" alt="" style="width:24px;height:24px;object-fit:contain;"/>
+          <b style="color:var(--text);">2-я лига «Б» · 4 группы</b>
+        </div>
+        <div class="small muted">Весна-осень · 4 победителя групп напрямую в «Серебро»</div>
+      </a>
+      <a href="#/table/media" class="card" style="text-decoration:none;display:block;padding:14px;background:var(--soft);border-radius:8px;border:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <img src="/logos/leagues/media.svg" alt="" style="width:24px;height:24px;object-fit:contain;"/>
+          <b style="color:var(--text);">Медиалига (MFL)</b>
+        </div>
+        <div class="small muted">16 медиаклубов · Плей-офф топ-4 в 1/2, 5–8 стыки</div>
+      </a>
+    </div>
+  </div>
+  `;
+
+  app.querySelectorAll('[data-reg]').forEach(b => {
+    b.onclick = () => {
+      REG_TAB = b.dataset.reg;
+      pgRegulations(app);
+    };
+  });
+}
+
+/* ───── клуб ───── */
+let CT = 'matches', CLUB_TID = '';
+async function pgClub(app) {
+  if (!S.me) return location.hash = '#/login';
+  if (S.me.role === 'admin' && !CLUB_TID) {
+    const t = (S.st?.teams || []).filter(t => t.comp === 'rpl');
+    CLUB_TID = t[0]?.id || '';
+  }
+  const q = S.me.role === 'admin' ? '?teamId=' + CLUB_TID : '';
+  let c;
+  try {
+    c = await api('/club' + q);
+  } catch (x) {
+    app.innerHTML = `<div class="panel warn">${e(x.message)}</div>`;
+    return;
+  }
+  const withT = o => S.me.role === 'admin' ? { ...o, teamId: CLUB_TID } : o;
+  const logo = c.team.logo || teamLogo(c.team.id);
+
+  app.innerHTML = `
+  <div class="panel club-hero">
+    ${logo ? `<img class="t-logo xl" src="${logo}" alt="${e(c.team.name)}"/>` : ''}
+    <div style="flex:1">
+      <div class="row" style="margin-bottom:6px">
+        <span class="tag">${e(compName(c.team.comp))}</span>
+        ${c.team.city ? `<span class="tag">${e(c.team.city)}</span>` : ''}
+        ${c.team.stadium ? `<span class="tag">🏟 ${e(c.team.stadium)}</span>` : ''}
+      </div>
+      <h1 style="margin:0">${e(c.team.name)}</h1>
+    </div>
+    ${S.me.role === 'admin' ? `<select id="tsel" style="max-width:240px">${(S.st?.teams || []).map(t => `<option value="${t.id}" ${t.id === CLUB_TID ? 'selected' : ''}>${e(t.name)} (${e(compName(t.comp))})</option>`).join('')}</select>` : ''}
+  </div>
+  <div class="tabs"><button data-t="matches" class="${CT === 'matches' ? 'on' : ''}">Матчи и тактика</button><button data-t="squad" class="${CT === 'squad' ? 'on' : ''}">Заявка (${c.squad.length}/${c.squadMax})</button></div>
+  <div id="cb"></div>`;
+
+  $('#tsel') && ($('#tsel').onchange = ev => { CLUB_TID = ev.target.value; pgClub(app); });
+  app.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { CT = b.dataset.t; pgClub(app); });
+  const cb = $('#cb');
+
+  if (CT === 'squad') {
+    const gp = { ВР: 0, ЦЗ: 1, ЛЗ: 1, ПЗ: 1, ОП: 2, ЦП: 2, АП: 2, ЛВ: 3, ПВ: 3, ЦФ: 3 };
+    cb.innerHTML = `<div class="panel"><h3>Добавить игрока</h3><p class="muted small">Начните вводить фамилию. Если игрока нет в базе, нажмите «Создать»: нейросеть заполнит карточку. Игрок из чужой заявки уйдёт на согласование админу.</p>
+    <div class="row"><div class="sug" style="flex:1;min-width:240px"><input id="pn" placeholder="Например: Месси" autocomplete="off"><div class="list" id="pl" hidden></div></div><select id="pp" style="width:90px"><option value="">поз.</option>${Object.keys(gp).map(p => `<option>${p}</option>`).join('')}</select><button class="btn" id="padd">Создать и добавить</button></div></div>
+    <div class="panel wrap"><table><thead><tr><th class="l">Игрок</th><th>Поз.</th><th>Возраст</th><th class="l">Стиль</th><th class="l">Статус</th><th></th></tr></thead><tbody>${c.squad.sort((a, b) => gp[a.pos] - gp[b.pos]).map(p => `<tr><td class="l">${e(p.name)}</td><td>${p.pos}</td><td>${age(p.born)}</td><td class="l muted small" style="white-space:normal;max-width:340px">${e(p.style)}</td><td class="l">${p.available ? '<span class="tag">готов</span>' : `<span class="tag" style="background:#fde8e6">${p.banLeft > 0 ? 'дисквалификация' : 'травма'}</span>`}</td><td><button class="btn alt sm" data-rm="${p.id}">убрать</button></td></tr>`).join('') || '<tr><td colspan="6" class="empty">Заявка пуста.</td></tr>'}</tbody></table></div>
+    <div class="row"><button class="btn" id="subm">Подать заявку на сезон</button><span class="muted small">${c.squadSubmitted ? 'Заявка подана. Изменения учитываются автоматически.' : 'Пока заявка не подана, в матчи идут все ваши игроки.'}</span></div>`;
+
+    let t;
+    $('#pn').oninput = () => {
+      clearTimeout(t);
+      t = setTimeout(async () => {
+        const v = $('#pn').value.trim();
+        if (v.length < 2) return $('#pl').hidden = true;
+        const r = await api('/players/search?q=' + encodeURIComponent(v));
+        $('#pl').hidden = !r.length;
+        $('#pl').innerHTML = r.map(p => `<div data-id="${p.id}">${e(p.name)} <span class="muted small">${p.pos} · ${e(p.team)}</span></div>`).join('');
+      }, 220);
+    };
+
+    $('#pl').onclick = async ev => {
+      const id = ev.target.closest('[data-id]')?.dataset.id;
+      if (!id) return;
+      $('#pl').hidden = true;
+      const r = await act(() => api('/club/squad/add', withT({ playerId: id })));
+      if (r) { r.pending ? toast(r.message) : toast('Игрок добавлен'); pgClub(app); }
+    };
+
+    $('#padd').onclick = async () => {
+      const n = $('#pn').value.trim();
+      if (!n) return;
+      $('#padd').disabled = true;
+      $('#padd').textContent = 'Создаю карточку…';
+      const r = await act(() => api('/club/squad/add', withT({ name: n, pos: $('#pp').value })));
+      if (r) { r.pending ? toast(r.message) : toast('Игрок добавлен'); pgClub(app); }
+      else { $('#padd').disabled = false; $('#padd').textContent = 'Создать и добавить'; }
+    };
+
+    cb.querySelectorAll('[data-rm]').forEach(b => b.onclick = async () => {
+      if (confirm('Убрать игрока из заявки?')) {
+        await act(() => api('/club/squad/remove', withT({ playerId: b.dataset.rm })));
+        pgClub(app);
+      }
+    });
+
+    $('#subm').onclick = async () => {
+      await act(() => api('/club/squad/submit', withT({})), 'Заявка подана');
+      pgClub(app);
+    };
+    return;
+  }
+
+  if (!c.upcoming.length) {
+    cb.innerHTML = '<div class="empty panel">Ближайших матчей нет. Расписание создаёт админ.</div>';
+    return;
+  }
+  cb.innerHTML = c.upcoming.map(f => {
+    const oppLogo = f.oppLogo || teamLogo(f.home === c.team.id ? f.away : f.home);
+    return `<div class="panel" data-f="${f.id}">
+      <div class="row sp">
+        <div class="t-cell">
+          ${oppLogo ? `<img class="t-logo md" src="${oppLogo}" alt=""/>` : ''}
+          <h3 style="margin:0">${fmtD(f.date)}, ${f.time} · ${e(f.label)} · ${f.home === c.team.id ? 'дома' : 'в гостях'} против ${e(f.opp)}</h3>
+        </div>
+        <span>${f.derby ? '<span class="tag derby">дерби</span> ' : ''}<span class="tag">${f.lineup ? 'состав подан' : 'состав не подан'}</span></span>
+      </div>
+      <div style="margin-top:10px"><button class="btn alt sm open">Настроить состав, тактику и тренировки</button></div>
+      <div class="form"></div>
+    </div>`;
+  }).join('');
+
+  cb.querySelectorAll('.panel').forEach(p => p.querySelector('.open')?.addEventListener('click', () => {
+    const f = c.upcoming.find(x => x.id === p.dataset.f);
+    p.querySelector('.open')?.remove();
+    lineupForm(p.querySelector('.form'), f, c, withT, app);
+  }));
+}
+
+function lineupForm(box, f, c, withT, app) {
+  const L = f.lineup || c.tactic || f.auto;
+  const st = new Set(L.starters || []), bn = new Set(L.bench || []);
+  const order = { ВР: 0, ЦЗ: 1, ЛЗ: 1, ПЗ: 1, ОП: 2, ЦП: 2, АП: 2, ЛВ: 3, ПВ: 3, ЦФ: 3 };
+  const sq = [...c.squad].sort((a, b) => order[a.pos] - order[b.pos]);
+
+  box.innerHTML = `<label>Схема</label><input class="fm" value="${e(L.formation || '4-3-3')}" style="max-width:140px">
+  <label>Состав: выберите 11 в старт и до 9 на скамейку <span class="muted small" data-cnt></span></label>
+  <div>${sq.map(p => `<div class="pick ${p.available ? '' : 'off'}"><span class="tag">${p.pos}</span><span>${e(p.name)}${p.available ? '' : ' <span class="muted small">(недоступен)</span>'}</span><select data-p="${p.id}" ${p.available ? '' : 'disabled'}><option value="">—</option><option value="s" ${st.has(p.id) ? 'selected' : ''}>В старте</option><option value="b" ${bn.has(p.id) ? 'selected' : ''}>Скамейка</option></select></div>`).join('')}</div>
+  <label>Тактика — всё, что тренер говорит игрокам перед матчем</label><textarea class="sp1" placeholder="Пишите как есть: установка, настрой, речь. Молчание — тоже речь.">${e(L.speech || '')}</textarea>
+  <label>Тренировочный план перед матчем (произвольный текст)</label><textarea class="tr1" placeholder="Например: пн — отдых, вт — прессинг 2 часа, ср — стандарты, чт — разминка, пт — отдых">${e(L.training || '')}</textarea>
+  <div class="row" style="margin-top:14px"><button class="btn save">Сохранить</button><span class="muted small">Состав можно менять до начала матча.</span></div>`;
+
+  const cnt = () => {
+    const a = [...box.querySelectorAll('select')].filter(s => s.value === 's').length;
+    const b = [...box.querySelectorAll('select')].filter(s => s.value === 'b').length;
+    box.querySelector('[data-cnt]').textContent = `— старт ${a}/11, скамейка ${b}`;
+  };
+  cnt();
+  box.addEventListener('change', cnt);
+
+  box.querySelector('.save').onclick = async () => {
+    const sel = [...box.querySelectorAll('select')];
+    const starters = sel.filter(s => s.value === 's').map(s => s.dataset.p);
+    const bench = sel.filter(s => s.value === 'b').map(s => s.dataset.p);
+    const r = await act(() => api('/club/lineup', withT({ fid: f.id, formation: box.querySelector('.fm').value, starters, bench, speech: box.querySelector('.sp1').value, training: box.querySelector('.tr1').value })), 'Сохранено');
+    if (r) pgClub(app);
+  };
+}
+
+/* ───── админка ───── */
+let AT = 'matches', AF = { comp: 'rpl', round: '' };
+async function pgAdmin(app) {
+  if (S.me?.role !== 'admin') return location.hash = '#/login';
+  const ov = await api('/admin/overview');
+  const T = ov.teams;
+  const tabs = [['matches', 'Матчи'], ['clubs', 'Клубы и логотипы'], ['players', 'Игроки'], ['derbies', 'Дерби'], ['transfers', `Трансферы${ov.transfers.length ? ' (' + ov.transfers.length + ')' : ''}`], ['settings', 'Настройки']];
+  app.innerHTML = `<h1>Админка</h1><div class="tabs">${tabs.map(([k, t]) => `<button data-a="${k}" class="${k === AT ? 'on' : ''}">${t}</button>`).join('')}</div><div id="ab"></div>`;
+  app.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { AT = b.dataset.a; pgAdmin(app); });
+  const ab = $('#ab'), re = () => pgAdmin(app);
+
+  if (!ov.keys.gemini && !ov.keys.groq && !ov.keys.openrouter) {
+    ab.insertAdjacentHTML('beforebegin', '<div class="warn" style="margin-bottom:12px">Ключей нейросети нет: матчи идут на запасном генераторе, карточки игроков пустые. Добавьте ключ во вкладке «Настройки».</div>');
+  }
+
+  if (AT === 'matches') {
+    const all = await api(`/fixtures?comp=${AF.comp}`);
+    const labels = [...new Set(all.map(f => f.label))];
+    if (!AF.round || !labels.includes(AF.round)) AF.round = (all.find(f => f.status !== 'done') || all[all.length - 1] || {}).label || '';
+    const list = all.filter(f => f.label === AF.round);
+    ab.innerHTML = `<div class="panel"><h3>Сезон</h3><p class="muted small">Сейчас: ${e(ov.settings.season)}, матчей в расписании: ${all.length ? 'есть' : 'нет'}. Расписание строится для РПЛ, ФНЛ, ФНЛ-2, ПФЛ, Медиалиги и Кубка России сразу.</p>
+    <div class="row"><input id="sn" value="${e(ov.settings.season)}" style="width:130px" title="Название сезона"><input id="sd" type="date" style="width:170px" title="Дата первого тура"><button class="btn" id="gen">Создать расписание сезона</button></div></div>
+    <div class="panel"><div class="row">${(S.st?.comps || []).map(c => `<button class="btn sm ${c.id === AF.comp ? '' : 'alt'}" data-c="${c.id}">${e(c.name)}</button>`).join('')}<select id="rsel" style="max-width:200px">${labels.map(l => `<option ${l === AF.round ? 'selected' : ''}>${e(l)}</option>`).join('')}</select>
+    <button class="btn" id="runr">Запустить все матчи этого тура</button></div><p class="muted small">Матчи, где у обеих команд есть заявка (14+ игроков), играются полностью с трансляцией. Остальные получают счёт сразу. Автозапуск по времени включается в «Настройках».</p></div>
+    <div class="panel">${list.length ? list.map(f => `<div class="row sp" style="padding:6px 0;border-bottom:1px solid var(--line)"><div style="flex:1;min-width:260px">${fxRow(f)}</div><div class="row">${f.status === 'scheduled' ? `<button class="btn sm" data-run="${f.id}">Запуск</button><button class="btn alt sm" data-lu="${f.id}">Составы</button><button class="btn alt sm" data-ed="${f.id}">Дата/счёт</button>` : ''}${['done', 'live', 'queued', 'generating'].includes(f.status) ? `<button class="btn alt sm" data-rs="${f.id}">Сбросить</button>` : ''}</div></div>`).join('') : '<div class="empty">Нет матчей. Создайте расписание сезона.</div>'}</div>`;
+
+    ab.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { AF.comp = b.dataset.c; AF.round = ''; re(); });
+    $('#rsel').onchange = ev => { AF.round = ev.target.value; re(); };
+    $('#gen').onclick = async () => {
+      const force = all.length && confirm('Расписание этого сезона уже есть. Создать заново? Сыгранные матчи пропадут.');
+      if (all.length && !force) return;
+      const r = await act(() => api('/admin/season', { start: $('#sd').value, name: $('#sn').value, force: 1 }), r => `Создано матчей: ${r.fixtures}`);
+      if (r) re();
+    };
+    $('#runr').onclick = async () => {
+      const comp = AF.comp, rd = list[0]?.round;
+      const r = await act(() => api('/admin/run', { comp, round: rd }), r => `Запущено: ${r.full} с трансляцией, ${r.bg} со счётом`);
+      if (r) setTimeout(re, 800);
+    };
+    ab.querySelectorAll('[data-run]').forEach(b => b.onclick = async () => {
+      const r = await act(() => api('/admin/run', { fid: b.dataset.run }), r => r.full ? 'Матч запущен, идёт подготовка' : 'Счёт готов');
+      if (r) setTimeout(re, 800);
+    });
+    ab.querySelectorAll('[data-rs]').forEach(b => b.onclick = async () => {
+      if (confirm('Сбросить матч? Результат и статистика пропадут.')) {
+        await act(() => api('/admin/fixture', { id: b.dataset.rs, reset: 1 }), 'Сброшен');
+        re();
+      }
+    });
+    ab.querySelectorAll('[data-lu]').forEach(b => b.onclick = async () => {
+      const l = await api('/admin/lineups/' + b.dataset.lu);
+      modal(['home', 'away'].map(s => `<div class="row" style="gap:10px">${l[s].logo ? `<img class="t-logo md" src="${l[s].logo}" alt=""/>` : ''}<h3 style="margin:0">${e(l[s].team)} · ${e(l[s].formation)} ${l[s].submitted ? '' : '<span class="tag">авто</span>'}</h3></div><p class="small"><b>Старт:</b> ${e(l[s].starters.join(', '))}<br><b>Скамейка:</b> ${e(l[s].bench.join(', '))}</p><div class="qa small">Речь: ${e(l[s].speech || '(молчание)')}\nТренировки: ${e(l[s].training || '—')}</div>`).join('<hr>'));
+    });
+    ab.querySelectorAll('[data-ed]').forEach(b => b.onclick = () => {
+      const f = all.find(x => x.id === b.dataset.ed);
+      const m = modal(`<h3>${e(f.homeName)} — ${e(f.awayName)}</h3><label>Дата</label><input id="ed" type="date" value="${f.date}"><label>Время</label><input id="et" value="${f.time}"><div class="row" style="margin-top:14px"><button class="btn" id="es">Сохранить дату и время</button></div><hr><label>Или вручную проставить счёт (без симуляции)</label><div class="row"><input id="eh" type="number" min="0" style="width:80px"><b>:</b><input id="ea" type="number" min="0" style="width:80px"><button class="btn alt" id="eg">Записать счёт</button></div>`, m => {
+        m.querySelector('#es').onclick = async () => {
+          await act(() => api('/admin/fixture', { id: f.id, date: m.querySelector('#ed').value, time: m.querySelector('#et').value }), 'Сохранено');
+          m.remove(); re();
+        };
+        m.querySelector('#eg').onclick = async () => {
+          await act(() => api('/admin/fixture', { id: f.id, hg: m.querySelector('#eh').value, ag: m.querySelector('#ea').value }), 'Счёт записан');
+          m.remove(); re();
+        };
+      });
+    });
+  }
+  else if (AT === 'clubs') {
+    ab.innerHTML = `<div class="panel">
+      <div class="row sp">
+        <h3>Команды и логотипы (${T.length})</h3>
+        <button class="btn" id="addt">+ Новая команда</button>
+      </div>
+      <p class="muted small">Все команды снабжены аутентичными векторными эмблемами. Вы можете менять название, стадион, код и загружать собственный логотип.</p>
+      <div class="wrap"><table><thead><tr><th class="l">Эмблема</th><th class="l">Команда</th><th class="l">Лига</th><th class="l">Код</th><th>Игроков</th><th>Заявка</th><th></th></tr></thead><tbody>${T.map(t => `<tr>
+        <td class="l"><img class="t-logo md" src="${t.logo}" alt="${e(t.name)}"/></td>
+        <td class="l"><b>${e(t.name)}</b></td>
+        <td class="l">${e(compName(t.comp))}</td>
+        <td class="l">${t.code ? `<span class="code" data-cp="${t.code}" style="cursor:pointer" title="Скопировать">${t.code}</span>` : '<span class="muted">—</span>'}</td>
+        <td>${t.squad}</td>
+        <td>${t.submitted ? 'подана' : '—'}</td>
+        <td class="l"><button class="btn alt sm" data-te="${t.id}">Изменить</button> <button class="btn alt sm" data-im="${t.id}">Загрузить игроков</button></td>
+      </tr>`).join('')}</tbody></table></div>
+    </div>`;
+
+    ab.querySelectorAll('[data-cp]').forEach(s => s.onclick = () => { navigator.clipboard?.writeText(s.dataset.cp); toast('Код скопирован'); });
+
+    const teamForm = t => {
+      const curLogo = t?.logo || '';
+      const m = modal(`
+      <h3>${t ? 'Команда: ' + e(t.name) : 'Новая команда'}</h3>
+      <div class="logo-preview-box">
+        <img id="prevImg" class="t-logo lg" src="${curLogo}" alt="Превью логотипа"/>
+        <div>
+          <div style="font-weight:600">Эмблема клуба</div>
+          <div class="small muted">Векторный SVG или URL изображения</div>
+        </div>
+      </div>
+      <label>Название</label><input id="tn" value="${e(t?.name || '')}">
+      <label>Лига</label><select id="tc">${(S.st?.comps || []).filter(c => c.type === 'league').map(c => `<option value="${c.id}" ${t?.comp === c.id ? 'selected' : ''}>${e(c.name)}</option>`).join('')}</select>
+      <label>Логотип (SVG Data URI или URL ссылки на картинку)</label>
+      <input id="tlogo" value="${e(curLogo)}" placeholder="Оставьте пустым для авто-генерации герба">
+      <label>Город</label><input id="tci" value="${e(t?.city || '')}">
+      <label>Стадион</label><input id="ts" value="${e(t?.stadium || '')}">
+      <div class="row">
+        <div style="flex:1"><label>Широта (для погоды)</label><input id="tla" value="${t?.lat ?? ''}"></div>
+        <div style="flex:1"><label>Долгота</label><input id="tlo" value="${t?.lon ?? ''}"></div>
+      </div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn" id="tsv">Сохранить</button>
+        ${t ? '<button class="btn alt" id="trg">Новый код</button><button class="btn alt" id="tcc">Убрать код</button><button class="btn red" id="tdl">Удалить</button>' : ''}
+      </div>`, m => {
+        const inpLogo = m.querySelector('#tlogo');
+        const prevImg = m.querySelector('#prevImg');
+        inpLogo.oninput = () => {
+          prevImg.src = inpLogo.value.trim() || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"/>';
+        };
+
+        const send = x => act(() => api('/admin/team', {
+          id: t?.id,
+          name: m.querySelector('#tn').value,
+          comp: m.querySelector('#tc').value,
+          logo: m.querySelector('#tlogo').value,
+          city: m.querySelector('#tci').value,
+          stadium: m.querySelector('#ts').value,
+          lat: m.querySelector('#tla').value,
+          lon: m.querySelector('#tlo').value,
+          ...x
+        }), 'Готово').then(r => { if (r) { m.remove(); re(); } });
+
+        m.querySelector('#tsv').onclick = () => send({});
+        if (t) {
+          m.querySelector('#trg').onclick = () => send({ regen: 1 });
+          m.querySelector('#tcc').onclick = () => send({ clearCode: 1 });
+          m.querySelector('#tdl').onclick = () => confirm('Удалить команду?') && send({ delete: 1 });
+        }
+      });
+    };
+
+    $('#addt').onclick = () => teamForm(null);
+    ab.querySelectorAll('[data-te]').forEach(b => b.onclick = () => teamForm(T.find(t => t.id === b.dataset.te)));
+    ab.querySelectorAll('[data-im]').forEach(b => b.onclick = () => {
+      const t = T.find(x => x.id === b.dataset.im);
+      modal(`<h3>Игроки ${e(t.name)}</h3><p class="muted small">Вставьте список фамилий (по одной в строке или через запятую). Нейросеть заполнит карточки: позиция, возраст, стиль, достижения, статистика.</p><textarea id="nm" style="min-height:200px" placeholder="Иванов&#10;Петров&#10;Сидоров"></textarea><div class="row" style="margin-top:12px"><button class="btn" id="goi">Загрузить</button><button class="btn alt" id="gor">Обновить карточки (форма, новости)</button></div>`, m => {
+        m.querySelector('#goi').onclick = async ev => {
+          ev.target.disabled = true;
+          ev.target.textContent = 'Работаю…';
+          const r = await act(() => api('/admin/import', { teamId: t.id, names: m.querySelector('#nm').value }), r => `Добавлено ${r.added}, из них найдено нейросетью: ${r.verified}`);
+          if (r) { m.remove(); re(); }
+          else { ev.target.disabled = false; ev.target.textContent = 'Загрузить'; }
+        };
+        m.querySelector('#gor').onclick = async ev => {
+          ev.target.disabled = true;
+          const r = await act(() => api('/admin/refresh', { teamId: t.id }), r => `Обновлено карточек: ${r.updated}`);
+          ev.target.disabled = false;
+        };
+      });
+    });
+  }
+  else if (AT === 'players') {
+    ab.innerHTML = `<div class="panel"><div class="row"><input id="pq" placeholder="Поиск по фамилии" style="flex:1;min-width:200px"><select id="pt" style="max-width:230px"><option value="">Все команды</option>${T.map(t => `<option value="${t.id}">${e(t.name)}</option>`).join('')}</select><button class="btn" id="pnew">+ Игрок</button></div><div id="plist" class="wrap" style="margin-top:10px"></div></div>`;
+    const load = async () => {
+      const l = await api(`/admin/players?q=${encodeURIComponent($('#pq').value)}&teamId=${$('#pt').value}`);
+      $('#plist').innerHTML = `<table><thead><tr><th class="l">Имя</th><th>Поз.</th><th>Возр.</th><th class="l">Клуб</th><th class="l">Карточка</th><th></th></tr></thead><tbody>${l.map(p => `<tr>
+        <td class="l">${e(p.name)}</td>
+        <td>${p.pos}</td>
+        <td>${age(p.born)}</td>
+        <td class="l"><div class="t-cell">${p.teamLogo ? `<img class="t-logo" src="${p.teamLogo}" alt=""/>` : ''}<span>${e(p.team)}</span></div></td>
+        <td class="l">${p.verified ? '<span class="tag">нейросеть</span>' : '<span class="tag bg">вручную / пусто</span>'}</td>
+        <td><button class="btn alt sm" data-pe="${p.id}">Править</button></td>
+      </tr>`).join('') || '<tr><td colspan="6" class="empty">Никого нет</td></tr>'}</tbody></table>`;
+      $('#plist').querySelectorAll('[data-pe]').forEach(b => b.onclick = () => pform(l.find(p => p.id === b.dataset.pe)));
+    };
+
+    const pform = p => {
+      const f = (k, l, ta) => `<label>${l}</label>${ta ? `<textarea id="f_${k}" style="min-height:60px">${e(p?.[k] || '')}</textarea>` : `<input id="f_${k}" value="${e(p?.[k] || '')}">`}`;
+      modal(`<h3>${p ? e(p.name) : 'Новый игрок'}</h3>${f('name', 'Имя')}<div class="row"><div style="flex:1">${f('pos', 'Позиция (ВР, ЦЗ, ЛЗ, ПЗ, ОП, ЦП, АП, ЛВ, ПВ, ЦФ)')}</div><div style="flex:1">${f('born', 'Дата рождения (ГГГГ или ГГГГ-ММ-ДД)')}</div></div><label>Клуб</label><select id="f_teamId"><option value="">без клуба</option>${T.map(t => `<option value="${t.id}" ${p?.teamId === t.id ? 'selected' : ''}>${e(t.name)}</option>`).join('')}</select>${f('style', 'Стиль игры', 1)}<label>Достижения (по одному в строке)</label><textarea id="f_ach" style="min-height:60px">${e((p?.achievements || []).join('\n'))}</textarea>${f('stats2y', 'Статистика за 2 сезона', 1)}${f('form', 'Текущая форма', 1)}${f('character', 'Характер', 1)}${f('news', 'Новости', 1)}<div class="row" style="margin-top:14px"><button class="btn" id="psv">Сохранить</button>${p ? '<button class="btn red" id="pdl">Удалить</button>' : ''}</div>`, m => {
+        const g = k => m.querySelector('#f_' + k).value;
+        m.querySelector('#psv').onclick = async () => {
+          const r = await act(() => api('/admin/player', { id: p?.id, name: g('name'), pos: g('pos'), born: g('born'), teamId: g('teamId'), style: g('style'), achievements: g('ach'), stats2y: g('stats2y'), form: g('form'), character: g('character'), news: g('news') }), 'Сохранено');
+          if (r) { m.remove(); load(); }
+        };
+        if (p) m.querySelector('#pdl').onclick = async () => {
+          if (confirm('Удалить игрока?')) {
+            await act(() => api('/admin/player', { id: p.id, delete: 1 }), 'Удалён');
+            m.remove(); load();
+          }
+        };
+      });
+    };
+
+    let t;
+    $('#pq').oninput = () => { clearTimeout(t); t = setTimeout(load, 250); };
+    $('#pt').onchange = load;
+    $('#pnew').onclick = () => pform(null);
+    load();
+  }
+  else if (AT === 'derbies') {
+    const d = await api('/derbies');
+    const opts = T.map(t => `<option value="${t.id}">${e(t.name)}</option>`).join('');
+    ab.innerHTML = `<div class="panel"><h3>Дерби и принципиальные соперники</h3><p class="muted small">Эти пары попадают в запрос каждого матча как «ПРОТИВОСТОЯНИЕ». Если пары здесь нет, нейросеть всё равно учтёт известное ей соперничество сама, но лучше вписать важное явно.</p>
+    <table><thead><tr><th class="l">Пара</th><th class="l">Название</th><th class="l">Заметка</th><th></th></tr></thead><tbody>${d.map(x => `<tr>
+      <td class="l">
+        <div class="t-cell">
+          ${x.aLogo ? `<img class="t-logo" src="${x.aLogo}"/>` : ''} ${e(x.aName)} — ${x.bLogo ? `<img class="t-logo" src="${x.bLogo}"/>` : ''} ${e(x.bName)}
+        </div>
+      </td>
+      <td class="l"><b>${e(x.name)}</b></td>
+      <td class="l small" style="white-space:normal">${e(x.note)}</td>
+      <td><button class="btn alt sm" data-dd="${x.id}">убрать</button></td>
+    </tr>`).join('')}</tbody></table></div>
+    <div class="panel"><h3>Добавить пару</h3><div class="row"><select id="da" style="flex:1">${opts}</select><select id="db" style="flex:1">${opts}</select></div><label>Название</label><input id="dn" placeholder="Например: Южное дерби"><label>Заметка для нейросети</label><input id="dt" placeholder="Почему этот матч особенный"><div class="row" style="margin-top:12px"><button class="btn" id="dadd">Добавить</button></div></div>`;
+
+    $('#dadd').onclick = async () => {
+      const r = await act(() => api('/admin/derby', { a: $('#da').value, b: $('#db').value, name: $('#dn').value, note: $('#dt').value }), 'Добавлено');
+      if (r) re();
+    };
+    ab.querySelectorAll('[data-dd]').forEach(b => b.onclick = async () => {
+      await act(() => api('/admin/derby', { id: b.dataset.dd, delete: 1 }));
+      re();
+    });
+  }
+  else if (AT === 'transfers') {
+    ab.innerHTML = `<div class="panel"><h3>Заявки на трансфер</h3>${ov.transfers.length ? ov.transfers.map(t => `<div class="row sp" style="padding:8px 0;border-bottom:1px solid var(--line)"><div><b>${e(t.pName)}</b>: ${e(t.fromName)} → ${e(t.toName)}<div class="muted small">${e(t.note || '')}</div></div><div class="row"><button class="btn sm" data-ap="${t.id}">Одобрить</button><button class="btn alt sm" data-rj="${t.id}">Отклонить</button></div></div>`).join('') : '<div class="empty">Заявок нет</div>'}</div>`;
+    ab.querySelectorAll('[data-ap]').forEach(b => b.onclick = async () => { await act(() => api('/admin/transfer', { id: b.dataset.ap, approve: 1 }), 'Одобрено'); re(); });
+    ab.querySelectorAll('[data-rj]').forEach(b => b.onclick = async () => { await act(() => api('/admin/transfer', { id: b.dataset.rj }), 'Отклонено'); re(); });
+  }
+  else if (AT === 'settings') {
+    const s = ov.settings, k = ov.keys, mo = ov.models || {};
+    ab.innerHTML = `<div class="panel"><h3>Код администратора</h3><div class="code">${e(s.adminCode)}</div><p class="muted small">Его можно переопределить переменной окружения ADMIN_CODE.</p></div>
+    <div class="panel"><h3>Нейросеть</h3><p class="muted small">Порядок: Gemini → Groq → OpenRouter. Если у одного закончился лимит, запрос уходит к следующему. Ключи можно задать здесь или переменными окружения.</p>
+    ${[['gemini', 'Google Gemini (AI Studio)', 'gemini-2.5-flash'], ['groq', 'Groq', 'openai/gpt-oss-120b'], ['openrouter', 'OpenRouter', 'openrouter/free']].map(([n, t, d]) => `<div class="row" style="margin-top:8px"><div style="flex:1;min-width:230px"><label>${t} ${k[n] ? '<span class="tag">ключ есть</span>' : ''}</label><input id="k_${n}" type="password" placeholder="${k[n] ? 'оставьте пустым, чтобы не менять' : 'вставьте ключ'}" autocomplete="off"></div><div style="flex:1;min-width:200px"><label>Модель</label><input id="m_${n}" value="${e(mo[n] || '')}" placeholder="${d}"></div></div>`).join('')}
+    <label style="margin-top:10px"><input type="checkbox" id="gr" ${s.grounding ? 'checked' : ''} style="width:auto"> Поиск Google при создании карточек (только Gemini)</label></div>
+    <div class="panel"><h3>Трансляция и Telegram</h3><div class="row"><div style="flex:1;min-width:200px"><label>Секунд реального времени на минуту матча</label><input id="spm" type="number" step="0.5" value="${s.secPerMin}"></div><div style="flex:1;min-width:200px"><label>Пауза на перерыве, сек</label><input id="brk" type="number" value="${s.breakSec}"></div></div>
+    <div class="row"><div style="flex:1;min-width:220px"><label>Токен Telegram-бота</label><input id="tgt" type="password" value="${e(s.tgToken)}" placeholder="123456:ABC…"></div><div style="flex:1;min-width:200px"><label>ID канала или чата</label><input id="tgc" value="${e(s.tgChat)}" placeholder="@mychannel"></div></div>
+    <label>Адрес сайта (для ссылок в Telegram)</label><input id="url" value="${e(s.siteUrl)}" placeholder="https://mysite.ru"></div>
+    <div class="panel"><h3>Игра</h3><div class="row"><div style="flex:1;min-width:200px"><label>Максимум игроков в заявке</label><input id="sqm" type="number" value="${s.squadMax}"></div><div style="flex:1;min-width:200px"><label>Запросов на матч</label><select id="chk"><option value="2" ${s.chunks != 6 ? 'selected' : ''}>2 (по таймам)</option><option value="6" ${s.chunks == 6 ? 'selected' : ''}>6 (по 15 минут)</option></select></div></div>
+    <label style="margin-top:8px"><input type="checkbox" id="auto" ${s.auto ? 'checked' : ''} style="width:auto"> Автозапуск матчей по расписанию</label></div>
+    <div class="panel"><h3>Системный промпт матча</h3><textarea id="sys" style="min-height:220px;font:13px/1.4 ui-monospace,Consolas,monospace">${e(s.systemPrompt)}</textarea></div>
+    <div class="row"><button class="btn" id="ssv">Сохранить настройки</button></div>
+    <div class="panel" style="margin-top:16px"><h3>Последние запросы к нейросети</h3><div class="wrap"><table><thead><tr><th class="l">Время</th><th class="l">Задача</th><th class="l">Провайдер</th><th>мс</th><th class="l">Результат</th></tr></thead><tbody>${ov.log.map(l => `<tr><td class="l">${new Date(l.ts).toLocaleTimeString('ru-RU')}</td><td class="l">${e(l.task)}</td><td class="l">${e(l.p)}</td><td>${l.ms}</td><td class="l small" style="white-space:normal">${l.ok ? 'ок' : e(l.err)}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">Пока пусто</td></tr>'}</tbody></table></div></div>`;
+
+    $('#ssv').onclick = async () => {
+      const keys = {}, models = {};
+      for (const n of ['gemini', 'groq', 'openrouter']) {
+        keys[n] = $('#k_' + n).value;
+        models[n] = $('#m_' + n).value;
+        if (!keys[n]) delete keys[n];
+      }
+      await act(() => api('/admin/settings', { keys, models, grounding: $('#gr').checked, secPerMin: $('#spm').value, breakSec: $('#brk').value, tgToken: $('#tgt').value, tgChat: $('#tgc').value, siteUrl: $('#url').value, squadMax: $('#sqm').value, chunks: $('#chk').value, auto: $('#auto').checked, systemPrompt: $('#sys').value }), 'Настройки сохранены');
+      re();
+    };
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
